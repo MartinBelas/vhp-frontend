@@ -1,0 +1,175 @@
+html {
+	overflow-y: scroll;
+}
+
+body {        
+    background-position: 0 120px; 
+	background-image: url('images/bg3.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	background-color: #efefef;
+	color:  #006633;
+	font-family: 'Titillium Web', sans-serif;
+	line-height: 150%;
+	margin: 38px auto; max-width: 940px; min-width: 420px; 
+}
+
+$primarycolor: #f39c12;
+
+.nav-link {
+  color: White;
+  cursor: pointer;
+  display: flex;
+  font-size: 24px;
+  letter-spacing: 4px;
+  text-align: center;
+  
+  &.active {
+    box-shadow: 0 2px 3px hsla(0, 0, 0, 0.7);
+      background: $primarycolor;
+          text-decoration: underline;
+  }
+}
+
+#frame { 
+	background: #d1e6ff; 
+	border: 1px solid #006633; 
+	border-radius: 0 0 12px 12px; 
+	min-height: 300px;
+	padding : 15px 20px 30px 10px;
+}
+
+header {
+	background-image: url('images/pulmaraton-banner-1.jpg');
+	border: 1px solid #006633; 
+	border-radius: 12px 12px 0 0;
+	min-height: 180px; 
+	text-align: center;
+}       
+
+header A, header A:ACTIVE, header A:LINK, header A:VISITED {
+	color: White;
+}
+
+header H3 {
+	color: Black;
+	font-style: italic;
+}
+
+
+.left {
+float : left;
+	text-align: left;
+	width : 170px;
+	position : relative;
+	display : block;
+	padding-left : 25px;
+	margin-right : 5px;
+}
+
+
+
+#content { 
+	display : block;
+	margin-top : 10px;
+	margin-left : 200px;
+	margin-right : 20px;
+	position : relative;
+	padding : 20px 20px 20px 20px;
+	background: #d1ffea;
+	border: 1px solid DarkGray;
+    border-radius: 0 0 12px 12px;
+}
+
+h1 { text-align: center;}
+h1 { font-size: 250%;}
+h2 {font-size : 125%;}
+h2 {font-size : 110%;}
+
+
+nav {
+	text-align: left;
+	margin-left : -40px;
+	font-size: 135%;
+	line-height: 120%;
+}
+
+nav ul {
+	font-weight : bold;
+	list-style-type : none;
+}
+
+nav > ul > li {
+	margin-bottom : 15px;
+	display : block;
+}
+	
+nav > ul > li > a {
+	text-decoration : none;
+}
+		
+nav > ul > li:hover > a {
+	color: #0D029D;
+}
+
+
+A:ACTIVE, A:LINK, A:VISITED 
+{
+	color: #0066CC;
+	text-decoration: none;
+}
+
+A:HOVER
+{
+	color: #0000ff;
+	text-decoration: none;
+}
+
+
+
+.adm {
+	background: White;
+	color: Red;
+	border: 2px solid Black;
+	border-radius: 5px 5px 5px 5px; 
+	padding: 10px;
+	margin: 10px;
+	width: 60%;
+	text-align: center;
+	float: center;
+	font-weight: bolder;
+}
+
+.adm a {
+	color: Red;
+}
+
+
+.clear {
+clear : both;
+height : 0;
+font-size : 0;
+line-height : 0;
+}
+label {
+width : 100px;
+}
+form p {
+clear : both;
+}
+
+input, textarea, select {
+background-color : #ffffcc;
+color : navy;
+border : 1px solid blue;
+margin-bottom : 2px;
+}
+input.tlacitko {
+background-color : navy;
+color : #ffffcc;
+font-weight : bold;
+}
+
+footer { font-size: 70%; padding: 1em 0; color: gray; }
+
