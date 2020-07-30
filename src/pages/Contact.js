@@ -21,7 +21,7 @@ class Contact extends Component {
 
                 <h3>START a CÍL</h3>  
                 <ul>                
-                    <li><a href="http://www.mapy.cz/s/3qgL" target="_blank">Areál TJ Jistebník</a></li>
+                    <li><a href="http://www.mapy.cz/s/3qgL" target="_blank" rel="noopener noreferrer">Areál TJ Jistebník</a></li>
                 </ul>
             </div>
         );

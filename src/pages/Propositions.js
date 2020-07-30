@@ -34,7 +34,7 @@ class Propositions extends Component {
                             V místě závodů jsou pro účastníky k dispozici šatny se sprchami.<br/> 
                             Za odložené věci pořadatel neručí. <br/>
                             Závodníci se účastní závodů na vlastní nebezpečí.</li>
-                        <li><b>Zdravotní služba:</b> <a href="http://www.zachranny-tym.cz" target="_blank">Záchranný tým červeného kříže</a></li>
+                        <li><b>Zdravotní služba:</b> <a href="http://www.zachranny-tym.cz" target="_blank" rel="noopener noreferrer">Záchranný tým červeného kříže</a></li>
                     </ul>
                 </p>
             </div>

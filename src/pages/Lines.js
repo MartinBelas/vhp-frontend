@@ -10,20 +10,20 @@ class Lines extends Component {
                 <h2>TRASY ZÁVODŮ</h2> 
                 
                 <p>
-                    <a href={galerijni} target="_blank">Galerijní 3,6 km <br />
-                        <img src={galerijni} width="600 px" />
+                    <a href={galerijni} target="_blank" rel="noopener noreferrer">Galerijní 3,6 km <br />
+                        <img src={galerijni} width="600 px" alt=""/>
                     </a>
                 </p>
 
                 <p>
-                    <a href={ctvrtmaraton} target="_blank">Čtvrtmaratón <br />
-                        <img src={ctvrtmaraton} width="600 px" />
+                    <a href={ctvrtmaraton} target="_blank" rel="noopener noreferrer">Čtvrtmaratón <br />
+                        <img src={ctvrtmaraton} width="600 px" alt=""/>
                     </a>
                 </p>
 
                 <p>
-                    <a href={pulmaraton} target="_blank">Půlmaratón a maratón (2x)<br />
-                        <img src={pulmaraton} width="600 px" />
+                    <a href={pulmaraton} target="_blank" rel="noopener noreferrer">Půlmaratón a maratón (2x)<br />
+                        <img src={pulmaraton} width="600 px" alt=""/>
                     </a>
                 </p>
             </div>
