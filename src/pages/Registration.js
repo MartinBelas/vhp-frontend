@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 class Registration extends Component {
 
     state = {registeredRunners: []}
 
     componentDidMount() {
-        fetch('/api/users')
-            .then(response => response.json())
-            .then(registeredRunners => {
-                this.setState({ registeredRunners });
+        const options = {
+            headers: {'api-key': process.env.REACT_APP_API_KEY}
+        };
+
+        axios.get('/api/users', options)
+            .then(response  => {
+                if (response.data) {
+                    this.setState({ registeredRunners: response.data });
+                }
+            })
+            .catch(error => {
+                console.log(error);
             });
     }
 
