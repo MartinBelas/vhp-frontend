@@ -15,23 +15,6 @@ body {
 	margin: 38px auto; max-width: 940px; min-width: 420px; 
 }
 
-$primarycolor: #f39c12;
-
-.nav-link {
-  color: White;
-  cursor: pointer;
-  display: flex;
-  font-size: 24px;
-  letter-spacing: 4px;
-  text-align: center;
-  
-  &.active {
-    box-shadow: 0 2px 3px hsla(0, 0, 0, 0.7);
-      background: $primarycolor;
-          text-decoration: underline;
-  }
-}
-
 #frame { 
 	background: #d1e6ff; 
 	border: 1px solid #006633; 
@@ -57,7 +40,6 @@ header H3 {
 	font-style: italic;
 }
 
-
 .left {
 float : left;
 	text-align: left;
@@ -67,8 +49,6 @@ float : left;
 	padding-left : 25px;
 	margin-right : 5px;
 }
-
-
 
 #content { 
 	display : block;
@@ -86,7 +66,6 @@ h1 { text-align: center;}
 h1 { font-size: 250%;}
 h2 {font-size : 125%;}
 h2 {font-size : 110%;}
-
 
 nav {
 	text-align: left;
@@ -113,7 +92,6 @@ nav > ul > li:hover > a {
 	color: #0D029D;
 }
 
-
 A:ACTIVE, A:LINK, A:VISITED 
 {
 	color: #0066CC;
@@ -126,25 +104,15 @@ A:HOVER
 	text-decoration: none;
 }
 
-
-
 .adm {
 	background: White;
 	color: Red;
 	border: 2px solid Black;
-	border-radius: 5px 5px 5px 5px; 
 	padding: 10px;
-	margin: 10px;
-	width: 60%;
-	text-align: center;
+	margin: 0px;
 	float: center;
 	font-weight: bolder;
 }
-
-.adm a {
-	color: Red;
-}
-
 
 .clear {
 clear : both;
