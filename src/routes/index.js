@@ -37,7 +37,7 @@ export default function Routes() {
             <Route exact path='/fotogalerie' component={Photos} />
             <Route exact path='/kontakty' component={Contact} />
             
-            <Route path="/images/trasy" />
+            <Route path="/images/trasy" component={Propositions}/>
 
             <Route path="/register" component={SignUp} />
 

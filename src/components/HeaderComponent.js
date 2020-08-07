@@ -17,7 +17,7 @@ const HeaderComponent = () => (
                 <br />
             </div>
         </header>
-        <nav class="adm">
+        <nav className="adm">
             {isAuthenticated
                 ? <span>
                     Jsi přihlášen jako administrátor: TODO &nbsp;

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-// import Bootstrap from "react-bootstrap";
+import axios from 'axios';
 
 export default class Login extends Component {
     constructor(props) {
@@ -18,45 +16,80 @@ export default class Login extends Component {
     }
 
     handleChange = event => {
+        console.log("HANDLE change... ");
         this.setState({
             [event.target.id]: event.target.value
         });
     }
 
     handleSubmit = event => {
-        // event.preventDefault();
+        console.log("HANDLE LOGIN... ");
+        event.preventDefault();
 
+        const options = {
+            headers: { 'api-key': process.env.REACT_APP_API_KEY }
+        };
 
+        const payload = JSON.stringify(
+            {"login":
+                { 
+                    "competition":"VHP", 
+                    "email":this.state.email, 
+                    "password":this.state.password 
+                }
+            })
+
+        axios.post('/api/auth/login', payload, options)
+        .then(response  => {
+            if (response.data) {
+                console.log("LOGIN RESULT: ", response.data);
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+        // Make the login API call
+        // const response = await fetch(`/api/auth/login`, {
+        //     method: 'POST',
+        //     body: JSON.stringify(
+        //         {"login":
+        //             { 
+        //                 "competition":"VHP", 
+        //                 "email":email, 
+        //                 "password":password 
+        //             }
+        //         })
+        // })
+        //...
+        // // Extract the JWT from the response
+        // const { jwt_token } = await response.json()
+        // //...
+        // // Do something the token in the login method
+        // await login({ jwt_token })
     }
 
     render() {
         return (
             <div className="Login">
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Group controlId="email" bsSize="large">
-                        <Form.Control
-                            autoFocus
-                            type="email"
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="password" bsSize="large">
-                        <Form.Control
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            type="password"
-                        />
-                    </Form.Group>
-                    <Button
-                        block
-                        bsSize="large"
-                        disabled={!this.validateForm()}
-                        type="submit"
-                    >
-                        Login
-          </Button>
-                </Form>
+            <form onSubmit={this.handleSubmit}>
+                <h3>Sign In</h3>
+
+                <div className="form-group">
+                    <label>Email address</label>
+                    <input type="email" className="form-control" placeholder="Enter email" onChange={this.handleChange}/>
+                </div>
+
+                <div className="form-group">
+                    <label>Password</label>
+                    <input type="password" className="form-control" placeholder="Enter password" onChange={this.handleChange}/>
+                </div>
+
+                <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                <p className="forgot-password text-right">
+                    Forgot <a href="#">password?</a>
+                </p>
+            </form>
             </div>
         );
     }
