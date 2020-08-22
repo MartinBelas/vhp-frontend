@@ -1,10 +1,17 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { loginAction } from '../redux/user/userActions';
+import { userService } from '../services/userService';
 
-export default class Login extends Component {
+import store from '../redux/store';
+
+const mapDispatchToProps = {
+    login: loginAction
+};
+
+class Login extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             email: "",
             password: ""
@@ -12,13 +19,12 @@ export default class Login extends Component {
     }
 
     validateForm() {
-        return this.state.email.length > 0 && this.state.password.length > 0;
+        return this.state.email.length > 0 && this.state.password.length > 0
     }
 
     handleChange = event => {
-        console.log("HANDLE change... ");
         this.setState({
-            [event.target.id]: event.target.value
+            [event.target.name]: event.target.value
         });
     }
 
@@ -26,42 +32,39 @@ export default class Login extends Component {
         console.log("HANDLE LOGIN... ");
         event.preventDefault();
 
-        const options = {
-            headers: { 'api-key': process.env.REACT_APP_API_KEY }
-        };
+        const loginData = {
+            "email": this.state.email,
+            "password": this.state.password
+        }
 
-        const payload = JSON.stringify(
-            {"login":
-                { 
-                    "competition":"VHP", 
-                    "email":this.state.email, 
-                    "password":this.state.password 
-                }
-            })
+        if (this.state.email && this.state.password) {
+            console.log('/--> HANDLE login submit...');
 
-        axios.post('/api/auth/login', payload, options)
-        .then(response  => {
-            if (response.data) {
-                console.log("LOGIN RESULT: ", response.data);
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        });
+            userService.login(this.state.email, this.state.password)
+                .then(
+                    resp => {
+                        //TODO
+                        console.log('--- LOGIN OK, resp: ', resp);
+                        if (resp.isOk) {
+                            this.props.login(resp.data.email);
+                        } else {
+                            this.props.login("");
+                        }
+                        console.log(" --- STORE: ", store.getState());
+                        // history.push('/');
+                    },
+                    error => {
+                        console.log('--- LOGIN ERR: ', error);
+                        this.setState({
+                            userEmail: ""
+                        });
+                    }
+                );
 
-        // Make the login API call
-        // const response = await fetch(`/api/auth/login`, {
-        //     method: 'POST',
-        //     body: JSON.stringify(
-        //         {"login":
-        //             { 
-        //                 "competition":"VHP", 
-        //                 "email":email, 
-        //                 "password":password 
-        //             }
-        //         })
-        // })
-        //...
+            loginAction(loginData);
+        }
+
+        //TODO
         // // Extract the JWT from the response
         // const { jwt_token } = await response.json()
         // //...
@@ -72,25 +75,27 @@ export default class Login extends Component {
     render() {
         return (
             <div className="Login">
-            <form onSubmit={this.handleSubmit}>
-                <h3>Sign In</h3>
+                <form onSubmit={this.handleSubmit}>
+                    <h3>Sign In</h3>
 
-                <div className="form-group">
-                    <label>Email address</label>
-                    <input type="email" className="form-control" placeholder="Enter email" onChange={this.handleChange}/>
-                </div>
+                    <div className="form-group">
+                        <label>Email address</label>
+                        <input type="email" name="email" placeholder="Enter email" onChange={this.handleChange} />
+                    </div>
 
-                <div className="form-group">
-                    <label>Password</label>
-                    <input type="password" className="form-control" placeholder="Enter password" onChange={this.handleChange}/>
-                </div>
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" placeholder="Enter password" onChange={this.handleChange} />
+                    </div>
 
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                <p className="forgot-password text-right">
-                    Forgot <a href="#">password?</a>
-                </p>
-            </form>
+                    <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                    <p className="forgot-password text-right">
+                        Forgot <a href="#">password?</a>
+                    </p>
+                </form>
             </div>
         );
     }
 }
+
+export default connect(null, mapDispatchToProps)(Login);

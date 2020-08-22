@@ -1,33 +1,50 @@
-import React from 'react';
+import React, { Component } from "react";
 
-function isAuthenticated() {
-    return true;
+import store from '../redux/store';
+import { connect } from "react-redux";
+import { loginAction } from '../redux/user/userActions';
+
+const mapDispatchToProps = {
+    login: loginAction
+};
+
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
 }
 
-function handleLogout() {
-}
+class HeaderComponent extends Component {
 
-const HeaderComponent = () => (
-    <div>
-        <header>
+    isAuthenticated = () => {
+        const userEmail = store.getState().user.userEmail;
+        if (!userEmail) {
+            return false;
+        }
+        return true;
+    }
+
+    render() {
+        return (
             <div>
-                <a href="http://www.vh-pulmaraton.cz/" title="VH půlmaraton">
-                    <h1>Jistebnický VH půlmaratón</h1>
-                </a>
-                <br />
+                <header>
+                    <div>
+                        <a href="http://www.vh-pulmaraton.cz/" title="VH půlmaraton">
+                            <h1>Jistebnický VH půlmaratón</h1>
+                        </a>
+                        <br />
+                    </div>
+                </header>
+                {this.isAuthenticated()
+                    ? <nav className="adm"><span>
+                        Jsi přihlášen jako administrátor: TODO &nbsp;
+                        <a href="/logout"><b>/&nbsp;Odhlásit&nbsp;/</b></a>&nbsp;
+                      </span ></nav>
+                    : ""
+                }
             </div>
-        </header>
-        <nav className="adm">
-            {isAuthenticated
-                ? <span>
-                    Jsi přihlášen jako administrátor: TODO &nbsp;
-                    <a href="/logout"><b>/&nbsp;Odhlásit&nbsp;/</b></a>&nbsp;
-                    <button onClick={handleLogout}>LOGOUT</button>
-                  </span >
-                : <span />
-            }
-        </nav>
-    </div>
-);
+        );
+    }
+}
 
-export default HeaderComponent;
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderComponent);
