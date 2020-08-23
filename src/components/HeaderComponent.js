@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import store from '../redux/store';
 import { connect } from "react-redux";
 
 const mapStateToProps = state => {
@@ -12,7 +11,7 @@ const mapStateToProps = state => {
 class HeaderComponent extends Component {
 
     isAuthenticated = () => {
-        const userEmail = store.getState().user.userEmail;
+        const userEmail = this.props.user.userEmail;
         if (!userEmail) {
             return false;
         }
