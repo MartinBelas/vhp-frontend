@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { loginAction } from '../redux/user/userActions';
 import { userService } from '../services/userService';
 
-import store from '../redux/store';
-
 const mapDispatchToProps = {
     loginAction
 };
@@ -50,7 +48,6 @@ class Login extends Component {
                         } else {
                             this.props.loginAction("");
                         }
-                        console.log(" --- STORE: ", store.getState());
                         // history.push('/');
                     },
                     error => {
