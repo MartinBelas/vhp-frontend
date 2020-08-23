@@ -6,7 +6,7 @@ import { userService } from '../services/userService';
 import store from '../redux/store';
 
 const mapDispatchToProps = {
-    login: loginAction
+    loginAction
 };
 
 class Login extends Component {
@@ -46,9 +46,9 @@ class Login extends Component {
                         //TODO
                         console.log('--- LOGIN OK, resp: ', resp);
                         if (resp.isOk) {
-                            this.props.login(resp.data.email);
+                            this.props.loginAction(resp.data.email);
                         } else {
-                            this.props.login("");
+                            this.props.loginAction("");
                         }
                         console.log(" --- STORE: ", store.getState());
                         // history.push('/');
