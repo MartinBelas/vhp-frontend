@@ -2,11 +2,6 @@ import React, { Component } from "react";
 
 import store from '../redux/store';
 import { connect } from "react-redux";
-import { loginAction } from '../redux/user/userActions';
-
-const mapDispatchToProps = {
-    login: loginAction
-};
 
 const mapStateToProps = state => {
     return {
@@ -47,4 +42,4 @@ class HeaderComponent extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderComponent);
+export default connect(mapStateToProps, null)(HeaderComponent);
