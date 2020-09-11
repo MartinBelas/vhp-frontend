@@ -27,7 +27,6 @@ class Login extends Component {
     }
 
     handleSubmit = event => {
-        console.log("HANDLE LOGIN... ");
         event.preventDefault();
 
         const loginData = {
@@ -36,13 +35,10 @@ class Login extends Component {
         }
 
         if (this.state.email && this.state.password) {
-            console.log('/--> HANDLE login submit...');
 
             userService.login(this.state.email, this.state.password)
                 .then(
                     resp => {
-                        //TODO
-                        console.log('--- LOGIN OK, resp: ', resp);
                         if (resp.isOk) {
                             this.props.loginAction(resp.data.email);
                         } else {
@@ -51,7 +47,6 @@ class Login extends Component {
                         // history.push('/');
                     },
                     error => {
-                        console.log('--- LOGIN ERR: ', error);
                         this.setState({
                             userEmail: ""
                         });

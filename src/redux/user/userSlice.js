@@ -11,6 +11,7 @@ export const slice = createSlice({
         },
         logout: state => {
             state.userEmail = "";
+            console.log('xxxxx----- LOGOUT 2');
         }
     }
 });

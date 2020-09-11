@@ -34,7 +34,6 @@ function login(email, password) {
 
     return fetch('/api/auth/login', requestOptions)
         .then(response => {
-            console.log('/--> RESP.: ', response)
             if (!response.ok) {
                 return Promise.reject(response.statusText);
             }
