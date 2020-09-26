@@ -6,7 +6,6 @@ import Login from "../pages/Login";
 import Home from '../pages/Home';
 import Registration from '../pages/Registration';
 import RegistrationForm from '../pages/RegistrationForm';
-
 import Results from '../pages/Results';
 import Program from '../pages/Program';
 import Propositions from '../pages/Propositions';
@@ -16,6 +15,7 @@ import Photos from '../pages/Photos';
 import Contact from '../pages/Contact';
 import Administration from '../pages/Administration';
 import AdministrationNextYear from '../pages/AdministrationNextYear';
+import NotFound from '../pages/NotFound';
 
 export default function Routes() {
     return (
@@ -37,7 +37,7 @@ export default function Routes() {
             
             <Route path="/images/trasy" component={Propositions}/>
 
-            <Route component={404} />
+            <Route component={NotFound} />
 
         </Switch>
 	
