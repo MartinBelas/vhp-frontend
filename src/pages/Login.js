@@ -1,59 +1,41 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux';
-import { loginAction } from '../redux/user/userActions';
+import React, { useState } from "react";
+import { useAppContext } from "../libs/contextLib";
 import { userService } from '../services/userService';
 
-const mapDispatchToProps = {
-    loginAction
-};
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: "",
-            password: ""
-        };
+export default function Login() {
+
+    const { userHasAuthenticated } = useAppContext();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    function validateForm() {
+        return email.length > 0 && password.length > 0
     }
 
-    validateForm() {
-        return this.state.email.length > 0 && this.state.password.length > 0
-    }
-
-    handleChange = event => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-    }
-
-    handleSubmit = event => {
+    function handleSubmit(event) {
         event.preventDefault();
 
-        const loginData = {
-            "email": this.state.email,
-            "password": this.state.password
-        }
+        if (email && password) {
 
-        if (this.state.email && this.state.password) {
-
-            userService.login(this.state.email, this.state.password)
+            userService.login(email, password)
                 .then(
                     resp => {
                         if (resp.isOk) {
-                            this.props.loginAction(resp.data.email);
+                            //TODO this.props.loginAction(resp.data.email);
+                            userHasAuthenticated(true);
+                            console.log('LOGIN OK');
                         } else {
-                            this.props.loginAction("");
+                            //TODO this.props.loginAction("");
                         }
                         // history.push('/');
                     },
                     error => {
-                        this.setState({
-                            userEmail: ""
-                        });
+                        userHasAuthenticated(false);
+                        console.log('LOGIN failed');
                     }
                 );
-
-            loginAction(loginData);
         }
 
         //TODO
@@ -64,30 +46,32 @@ class Login extends Component {
         // await login({ jwt_token })
     }
 
-    render() {
-        return (
-            <div className="Login">
-                <form onSubmit={this.handleSubmit}>
-                    <h3>Sign In</h3>
+    return (
+        <div className="Login">
+            <form onSubmit={handleSubmit}>
+                <h3>Sign In</h3>
 
-                    <div className="form-group">
-                        <label>Email address</label>
-                        <input type="email" name="email" placeholder="Enter email" onChange={this.handleChange} />
-                    </div>
+                <div className="form-group">
+                    <label>Email address</label>
+                    <input type="email"
+                        name="email"
+                        placeholder="Enter email"
+                        onChange={e => setEmail(e.target.value)} />
+                </div>
 
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input type="password" name="password" placeholder="Enter password" onChange={this.handleChange} />
-                    </div>
+                <div className="form-group">
+                    <label>Password</label>
+                    <input type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        onChange={e => setPassword(e.target.value)} />
+                </div>
 
-                    <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                    <p className="forgot-password text-right">
-                        Forgot <a href="#">password?</a>
-                    </p>
-                </form>
-            </div>
-        );
-    }
+                <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                <p className="forgot-password text-right">
+                    Forgot <a href="#">password?</a>
+                </p>
+            </form>
+        </div>
+    );
 }
-
-export default connect(null, mapDispatchToProps)(Login);

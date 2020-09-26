@@ -1,44 +1,31 @@
-import React, { Component } from "react";
+import React from "react";
+import { useAppContext } from "../libs/contextLib";
 
-import { connect } from "react-redux";
+export default function HeaderComponent() {
 
-const mapStateToProps = state => {
-    return {
-        user: state.user
+    const { isAuthenticated, userHasAuthenticated } = useAppContext();
+
+    function handleLogout() {
+        userHasAuthenticated(false);
     }
-}
-
-class HeaderComponent extends Component {
-
-    isAuthenticated = () => {
-        const userEmail = this.props.user.userEmail;
-        if (!userEmail) {
-            return false;
-        }
-        return true;
-    }
-
-    render() {
-        return (
-            <div>
-                <header>
-                    <div>
-                        <a href="http://www.vh-pulmaraton.cz/" title="VH půlmaraton">
-                            <h1>Jistebnický VH půlmaratón</h1>
-                        </a>
-                        <br />
-                    </div>
-                </header>
-                {this.isAuthenticated()
-                    ? <nav className="adm"><span>
+    return (
+        <div>
+            <header>
+                <div>
+                    <a href="http://www.vh-pulmaraton.cz/" title="VH půlmaraton">
+                        <h1>Jistebnický VH půlmaratón</h1>
+                    </a>
+                    <br />
+                </div>
+            </header>
+            {isAuthenticated
+                ?   <nav className="adm" onClick={handleLogout}><span>
                         Jsi přihlášen jako administrátor: TODO &nbsp;
                         <a href="/logout"><b>/&nbsp;Odhlásit&nbsp;/</b></a>&nbsp;
-                      </span ></nav>
-                    : ""
-                }
-            </div>
-        );
-    }
+                    </span ></nav>
+                : ""
+            }
+        </div>
+    );
 }
 
-export default connect(mapStateToProps, null)(HeaderComponent);
