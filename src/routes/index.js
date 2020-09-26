@@ -15,6 +15,7 @@ import Links from '../pages/Links';
 import Photos from '../pages/Photos';
 import Contact from '../pages/Contact';
 import Administration from '../pages/Administration';
+import AdministrationNextYear from '../pages/AdministrationNextYear';
 
 export default function Routes() {
     return (
@@ -22,6 +23,7 @@ export default function Routes() {
         <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/adm" component={Administration} />
+            <Route exact path="/adm/novy-rocnik" component={AdministrationNextYear} />
             <Route exact path='/' component={Home} />
             <Route exact path='/registrace' component={Registration} />
             <Route exact path='/registracni-formular' component={RegistrationForm} />
@@ -35,7 +37,7 @@ export default function Routes() {
             
             <Route path="/images/trasy" component={Propositions}/>
 
-            <Route component={Home} />
+            <Route component={404} />
 
         </Switch>
 	

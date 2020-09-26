@@ -1,13 +1,18 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAppContext } from "../libs/contextLib";
 
 export default function LeftMenuComponent() {
+
+    const { isAuthenticated } = useAppContext();
 
     return (
         <div className="left">
             <nav>
                 <ul>
-                    <li><NavLink to='/adm' className="nav-link">Administrace</NavLink></li>
+                    {isAuthenticated ?   
+                        <li><NavLink to='/adm' className="nav-link">Administrace</NavLink></li> : ""
+                    }
                     <li><NavLink to='/' className="nav-link">Úvod</NavLink></li>
                     <li><NavLink to='/registrace' className="nav-link">Registrace</NavLink></li>
                     <li><NavLink to='/vysledky' className="nav-link">Výsledky</NavLink></li>
