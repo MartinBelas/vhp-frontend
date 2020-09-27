@@ -1,55 +1,56 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from "react";
 import Countdown from 'react-countdown-now';
 import axios from 'axios';
 import config from '../config';
 //const config = require('./config.js');
 
-const COMPETITION_API = config.competitionApi;
+const REST_API = config.restApi;
+const options = {
+    headers: { 'api-key': process.env.REACT_APP_API_KEY }
+};
 
-class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            startDate: new Date('2020-06-23T23:59'),
-            newsItems: []
-        }
-    }
+export default function Home() {
 
-    componentDidMount() {
-        const options = {
-            headers: { 'api-key': process.env.REACT_APP_API_KEY }
-        };
+    const [startDate, setStartDate] = useState(0);
+    const [newsItems, setNewsItems] = useState();
 
-        axios.get(COMPETITION_API + '/news', options)
+    // componentDidMount() {
+    //     axios.get(COMPETITION_API + '/news', options)
+    //         .then(response => {
+    //             if (response.data) {
+    //                 this.setState({ newsItems: response.data });
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.log(error);
+    //         });
+    // }
+
+    useEffect(() => {
+        axios.get(REST_API + '/news', options)
             .then(response => {
-                if (response.data) {
-                    this.setState({ newsItems: response.data });
-                }
+                setNewsItems(response.data);
             })
-            .catch(error => {
-                console.log(error);
-            });
-    }
+            .catch(err => {
+                // setError(err.message);
+            })
+    }, []);
 
-    render() {
-        return (
-            <div id="content">
-                <h2>Home</h2>
+    return (
+        <div id="content">
+            <h2>Home</h2>
 
-                Do startu VH půlmaratonu zbývá
-                <Countdown
-                    date={this.state.startDate}
-                    renderer={({ days }) => <span> {days}</span>}
-                /> dnů.
+            Do startu VH půlmaratonu zbývá
+            <Countdown
+                date={startDate}
+                renderer={({ days }) => <span> {days}</span>}
+            /> dnů.
 
-                <ul>
-                    {this.state.newsItems.map((item) => {
-                        return <li key={item.id}>{item.title}</li>
-                    })}
-                </ul>
-            </div>
-        );
-    }
+            <ul>
+                {newsItems ? newsItems.map((item) => {
+                    return <li key={item.id}>{item.title}</li>
+                }) : ""} 
+            </ul>
+        </div>
+    );
 }
-
-export default Home;

@@ -1,3 +1,3 @@
 module.exports = {
-    "competitionApi": "/api/vhp"
+    "restApi": "/api/vhp"
 };
