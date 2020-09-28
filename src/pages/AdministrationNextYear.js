@@ -15,12 +15,14 @@ export default function AdministrationNextYear() {
 
     const { isAuthenticated } = useAppContext();
     const [lastDate, setLastDate] = useState();
+    const [lastCategories, setLastCategories] = useState([]);
     const [nextDate, setNextDate] = useState(DEFAULT_NEXT_YEAR);
 
     useEffect(() => {
         axios.get(REST_API + '/years/last', options)
             .then(response => {
                 setLastDate(response.data.vhpDate);
+                setLastCategories(response.data.categories);
             })
             .catch(err => {
                 // setError(err.message);
@@ -50,6 +52,12 @@ export default function AdministrationNextYear() {
                     <hr />
                     <div>
                         Kategorie: //TODO cat. default from last year
+                        <br />
+                        <ul>
+                            {lastCategories ? lastCategories.map((item) => {
+                                return <li key={item.id}>{item.id} - {item.description}</li>
+                            }) : ""} 
+                        </ul>
                 </div>
                 </div>
                 : ""
