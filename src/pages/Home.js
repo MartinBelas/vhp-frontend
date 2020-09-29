@@ -14,18 +14,6 @@ export default function Home() {
     const [startDate, setStartDate] = useState(0);
     const [newsItems, setNewsItems] = useState();
 
-    // componentDidMount() {
-    //     axios.get(COMPETITION_API + '/news', options)
-    //         .then(response => {
-    //             if (response.data) {
-    //                 this.setState({ newsItems: response.data });
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         });
-    // }
-
     useEffect(() => {
         axios.get(REST_API + '/news', options)
             .then(response => {

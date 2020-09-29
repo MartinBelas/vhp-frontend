@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import { useAppContext } from "../libs/contextLib";
 import { userService } from '../services/userService';
 
 
 export default function Login() {
+
+    let history = useHistory();
 
     const { userHasAuthenticated } = useAppContext();
 
@@ -26,6 +30,8 @@ export default function Login() {
                             //TODO this.props.loginAction(resp.data.email);
                             userHasAuthenticated(true);
                             console.log('LOGIN OK');
+                            history.push('/adm')
+
                         } else {
                             //TODO this.props.loginAction("");
                         }
@@ -47,6 +53,7 @@ export default function Login() {
     }
 
     return (
+        <div id="adm-content">
         <div className="Login">
             <form onSubmit={handleSubmit}>
                 <h3>Sign In</h3>
@@ -72,6 +79,7 @@ export default function Login() {
                     Forgot <a href="#">password?</a>
                 </p>
             </form>
+        </div>
         </div>
     );
 }

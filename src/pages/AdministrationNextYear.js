@@ -56,7 +56,7 @@ export default function AdministrationNextYear() {
     }
 
     return (
-        <div>
+        <div id="adm-content">
             {isAuthenticated ?
                 <div>
                     <h2>ADMINISTRACE - Další ročník</h2>
@@ -79,16 +79,16 @@ export default function AdministrationNextYear() {
                         a xxx je číslo a znamená věk, musí být na 3 znaky. Např. M018 znamená muži do 18 let a F350 znamená řeny do 350 let.
                         <br />
                         <ul>
-                            <li>kategorie - popis</li>
+                            <li>KATEGORIE - POPIS</li>
                             {categories.map((item) => (
                                 <li key={item.id}>
-                                    <span>{item.id}</span> - <span>{item.description}</span> - 
+                                    <span>{item.id}</span> - <span>{item.description}</span>  
                                     <button type="button" onClick={() => handleRemoveCategory(item.id)}>Odstranit</button>
                                 </li>
                             ))}
                         </ul>
-                        <input type="text" value={newId} onChange={handleIdChange} />
-                        <input type="text" value={newDescription} onChange={handleDescriptionChange} />
+                        Nová kategorie <input type="text" size="4" value={newId} onChange={handleIdChange} /> &nbsp;
+                        popis <input type="text" value={newDescription} onChange={handleDescriptionChange} /> &nbsp;
                         <button type="button" onClick={handleAddCategory}>
                             Přidej kategorii
                         </button>

@@ -7,7 +7,7 @@ export default function Administration() {
     const { isAuthenticated } = useAppContext();
 
     return (
-        <div>
+        <div id="adm-content">
         {isAuthenticated ?
             <div>
                 <h2>ADMINISTRACE</h2>
