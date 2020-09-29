@@ -17,7 +17,7 @@ export default function Login() {
     function handleSubmit(event) {
         event.preventDefault();
 
-        if (email && password) {
+        if (validateForm()) {
 
             userService.login(email, password)
                 .then(
