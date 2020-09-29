@@ -87,6 +87,23 @@ export default function AdministrationNextYear() {
         setNewRaceName('');
     }
 
+    function handleStartRegistrations() {
+        const payload = {
+            "nextDate": nextDate,
+            "categories": categories,
+            "races":races
+        }
+
+        axios.post(REST_API + '/years/next', payload, options)
+            .then(response => {
+                //TODO
+            })
+            .catch(err => {
+                console.log('ERROR: ', err);
+                // setError(err.message);
+            })
+    }
+
     return (
         <div id="adm-content">
             {isAuthenticated ?
@@ -144,8 +161,11 @@ export default function AdministrationNextYear() {
                         <button type="button" onClick={handleAddRace}>
                             Přidej závod
                         </button>
-
                     </div>
+                    <hr />
+                    <button type="button" onClick={handleStartRegistrations}>
+                        SPUSTIT REGISTRACE
+                    </button>
                 </div>
                 : ""
             }
