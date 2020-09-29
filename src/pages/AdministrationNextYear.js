@@ -15,18 +15,28 @@ export default function AdministrationNextYear() {
 
     const { isAuthenticated } = useAppContext();
     const [lastDate, setLastDate] = useState();
-    const [categories, setCategories] = useState([]);
     const [nextDate, setNextDate] = useState(DEFAULT_NEXT_YEAR);
+    const [categories, setCategories] = useState([]);
     const [newId, setNewId] = useState('');
     const [newDescription, setNewDescription] = useState('');
+    const [races, setRaces] = useState([]);
+    const [newRaceName, setNewRaceName] = useState('');
 
     useEffect(() => {
         axios.get(REST_API + '/years/last', options)
             .then(response => {
-                setLastDate(response.data.vhpDate);
-                setCategories(response.data.categories);
+                if (response.data.vhpDate) {
+                    setLastDate(response.data.vhpDate);
+                }
+                if (response.data.categories) {
+                    setCategories(response.data.categories);
+                }
+                if (response.data.races) {
+                    setRaces(response.data.races);
+                }
             })
             .catch(err => {
+                console.log('ERROR: ', err);
                 // setError(err.message);
             })
     }, []);
@@ -53,6 +63,28 @@ export default function AdministrationNextYear() {
         setCategories(newList);
         setNewId('');
         setNewDescription('');
+    }
+
+
+    function handleRemoveRace(frontendId) {
+        const newList = races.filter((item) => item.frontendId !== frontendId);
+        setRaces(newList);
+    }
+
+    function handleRaceChange(event) {
+        setNewRaceName(event.target.value);
+    }
+
+    function handleAddRace() {
+        let maxId = 0;
+        if (races.length > 0) {
+            maxId = races.reduce((a, b) =>  a.frontendId > b.frontendId ? a : b ).frontendId;
+        }
+        maxId++;
+        const newRace = { "frontendId":maxId, "name":newRaceName };
+        let newList = races.concat(newRace);
+        setRaces(newList);
+        setNewRaceName('');
     }
 
     return (
@@ -92,6 +124,27 @@ export default function AdministrationNextYear() {
                         <button type="button" onClick={handleAddCategory}>
                             Přidej kategorii
                         </button>
+                    </div>
+                    <hr />
+                    <div>
+                        <strong>Závody:</strong>
+                        <br />
+                        Půlmaratón, maratón, atd.
+                        <br />
+                        <ul>
+                            <li>ZÁVOD</li>
+                            {races.map((item) => (
+                                <li key={item.frontendId}>
+                                    <span>{item.frontendId}</span> - <span>{item.name}</span>  
+                                    <button type="button" onClick={() => handleRemoveRace(item.frontendId)}>Odstranit</button>
+                                </li>
+                            ))}
+                        </ul>
+                        Nový závod <input type="text" value={newRaceName} onChange={handleRaceChange} /> &nbsp;
+                        <button type="button" onClick={handleAddRace}>
+                            Přidej závod
+                        </button>
+
                     </div>
                 </div>
                 : ""
