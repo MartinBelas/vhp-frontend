@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Countdown from 'react-countdown-now';
+import Countdown from 'react-countdown';
 import axios from 'axios';
 import config from '../config';
 //const config = require('./config.js');
