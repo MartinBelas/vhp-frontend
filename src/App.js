@@ -21,6 +21,7 @@ export default function App() {
                     <div id="frame">
                         <LeftMenuComponent />
                         <Routes />
+                        <hr class="cleaner" />
                     </div>
                 </Router>
             </AppContext.Provider>

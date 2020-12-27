@@ -56,10 +56,10 @@ export default function Login() {
         <div id="adm-content">
         <div className="Login">
             <form onSubmit={handleSubmit}>
-                <h3>Sign In</h3>
+                <h3>Admin Log In</h3>
 
                 <div className="form-group">
-                    <label>Email address</label>
+                    <label>Email: </label>
                     <input type="email"
                         name="email"
                         placeholder="Enter email"
@@ -67,17 +67,19 @@ export default function Login() {
                 </div>
 
                 <div className="form-group">
-                    <label>Password</label>
+                    <label>Heslo: </label>
                     <input type="password"
                         name="password"
                         placeholder="Enter password"
                         onChange={e => setPassword(e.target.value)} />
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                <p className="forgot-password text-right">
-                    Forgot <a href="#">password?</a>
-                </p>
+                <br/>
+                <div className="form-group">
+                    <button type="submit">Přihlásit</button>
+                    <br/><br/>
+                    <a href="#">Zapomenuté heslo?</a>
+                    </div>
             </form>
         </div>
         </div>
