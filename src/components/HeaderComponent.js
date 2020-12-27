@@ -20,8 +20,8 @@ export default function HeaderComponent() {
             </header>
             {isAuthenticated
                 ?   <nav className="adm" onClick={handleLogout}><span>
-                        Jsi přihlášen jako administrátor: TODO &nbsp;
-                        <a href="/logout"><b>/&nbsp;Odhlásit&nbsp;/</b></a>&nbsp;
+                        Jsi přihlášen jako administrátor &nbsp;
+                        <a href="/"><b>/&nbsp;Odhlásit&nbsp;/</b></a>&nbsp;
                     </span ></nav>
                 : ""
             }
