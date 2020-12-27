@@ -74,6 +74,15 @@ float : left;
     border-radius: 0 0 12px 12px;
 }
 
+.news-item { 
+	width: 95%; 
+	background: #b9ffcb; 
+	margin-left: 0px;
+	margin-bottom: 20px;
+	padding: 10px; 
+	border: 1px solid DarkGray;
+}
+
 h1 { text-align: center;}
 h1 { font-size: 250%;}
 h2 {font-size : 125%;}

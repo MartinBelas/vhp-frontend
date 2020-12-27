@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Router } from 'react-router-dom';
+import axios from 'axios';
+import config from './config';
 
 import history from './services/history';
 import Routes from './routes';
@@ -8,20 +10,43 @@ import { AppContext } from "./libs/contextLib";
 import HeaderComponent from './components/HeaderComponent';
 import LeftMenuComponent from './components/LeftMenuComponent';
 
+const REST_API = config.restApi;
+const options = {
+    headers: { 'api-key': process.env.REACT_APP_API_KEY }
+};
+
 export default function App() {
 
     const [isAuthenticated, userHasAuthenticated] = useState(false);
+    const [startDate, setStartDate] = useState(0);
+    const [eventCounter, setEventCounter] = useState(0);
+    const [nextYearReady, setNextYearReady] = useState(false);
+    
+    useEffect(() => {
+        axios.get(REST_API + '/years/next', options)
+            .then(response => {
+                const nextDate = new Date(response.data.vhpDate).toLocaleDateString();
+                setStartDate(nextDate);
+                setEventCounter(response.data.vhpCounter);
+                if (new Date(response.data.vhpDate) > new Date()) {
+                    setNextYearReady(true);
+                }
+            })
+            .catch(err => {
+                //TODO setError(err.message);
+            })
+    }, []);
 
     return (
         <div>
-            <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+            <AppContext.Provider value={{ REST_API, options, isAuthenticated, userHasAuthenticated, startDate }}>
                 <Router history={history}>
                     <HeaderComponent />
-                    <center><h2>10. ročník jistebnického VH půlmaratónu se bude konat <b>23. května 2020</b>.</h2></center>
+                    {nextYearReady ? <center><h2>{eventCounter}. ročník jistebnického VH půlmaratónu se bude konat {startDate}</h2></center> : <br/>}
                     <div id="frame">
                         <LeftMenuComponent />
                         <Routes />
-                        <hr class="cleaner" />
+                        <hr className="cleaner" />
                     </div>
                 </Router>
             </AppContext.Provider>

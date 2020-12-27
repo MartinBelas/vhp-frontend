@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Countdown from 'react-countdown';
 import axios from 'axios';
-import config from '../config';
-//const config = require('./config.js');
-
-const REST_API = config.restApi;
-const options = {
-    headers: { 'api-key': process.env.REACT_APP_API_KEY }
-};
+import { useAppContext } from '../libs/contextLib';
 
 export default function Home() {
 
-    const [startDate, setStartDate] = useState(0);
+    const { REST_API, options, startDate, nextYearReady } = useAppContext();
     const [newsItems, setNewsItems] = useState();
+    const previewLength = 200;
 
     useEffect(() => {
         axios.get(REST_API + '/news', options)
@@ -26,19 +21,34 @@ export default function Home() {
 
     return (
         <div id="content">
-            <h2>Home</h2>
+            <h2>Novinky</h2>
 
-            Do startu VH půlmaratonu zbývá
-            <Countdown
-                date={startDate}
-                renderer={({ days }) => <span> {days}</span>}
-            /> dnů.
+            {nextYearReady ? <div className="news-item">
+                                Do startu VH půlmaratonu zbývá
+                                <Countdown
+                                    date={startDate}
+                                    renderer={({ days }) => <span> {days}</span>}
+                                /> dnů.
+                            </div> 
+                            : <br/>}
 
-            <ul>
-                {newsItems ? newsItems.map((item) => {
-                    return <li key={item.id}>{item.title}</li>
-                }) : ""} 
-            </ul>
+            {
+            newsItems ? newsItems.map((item) => {
+                const timestamp = new Date(item.date);
+                const date = timestamp.toLocaleDateString();
+                if (item.content.length > previewLength) 
+                    return  <div className="news-item" key={item.id}>
+                                <p className="date">{date} <b>{item.title}</b></p>
+                                <div>{item.content.substring(1, previewLength)} <i>(zkráceno)</i></div>
+                                <br /><a href={"news/"+item.id}>Zobrazit celý příspěvek</a>
+                            </div>
+                else 
+                    return  <div className="news-item" key={item.id}>
+                                <p className="date">{date} <b>{item.title}</b></p>
+                                <div>{item.content}</div>
+                            </div>
+
+            }) : ""} 
         </div>
     );
 }

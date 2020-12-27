@@ -78,7 +78,7 @@ export default function Login() {
                 <div className="form-group">
                     <button type="submit">Přihlásit</button>
                     <br/><br/>
-                    <a href="#">Zapomenuté heslo?</a>
+                    <a href="#">Zapomenuté heslo?</a> //TODO
                     </div>
             </form>
         </div>
