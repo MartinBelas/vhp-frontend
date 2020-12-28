@@ -7,6 +7,14 @@ import Home from '../pages/Home';
 import Registration from '../pages/Registration';
 import RegistrationForm from '../pages/RegistrationForm';
 import Results from '../pages/Results';
+import Results2011 from '../pages/results/Results2011';
+import Results2012 from '../pages/results/Results2012';
+import Results2013 from '../pages/results/Results2013';
+import Results2015 from '../pages/results/Results2015';
+import Results2017 from '../pages/results/Results2017';
+import Results2018 from '../pages/results/Results2018';
+import Results2019 from '../pages/results/Results2019';
+import Results2020 from '../pages/results/Results2020';
 import Program from '../pages/Program';
 import Propositions from '../pages/Propositions';
 import Lines from '../pages/Lines';
@@ -28,6 +36,14 @@ export default function Routes() {
             <Route exact path='/registrace' component={Registration} />
             <Route exact path='/registracni-formular' component={RegistrationForm} />
             <Route exact path='/vysledky' component={Results} />
+            <Route exact path='/vysledky/vysledky2011' component={Results2011} />
+            <Route exact path='/vysledky/vysledky2012' component={Results2012} />
+            <Route exact path='/vysledky/vysledky2013' component={Results2013} />
+            <Route exact path='/vysledky/vysledky2015' component={Results2015} />
+            <Route exact path='/vysledky/vysledky2017' component={Results2017} />
+            <Route exact path='/vysledky/vysledky2018' component={Results2018} />
+            <Route exact path='/vysledky/vysledky2019' component={Results2019} />
+            <Route exact path='/vysledky/vysledky2020' component={Results2020} />
             <Route exact path='/program' component={Program} />
             <Route exact path='/propozice' component={Propositions} />
             <Route exact path='/trasy' component={Lines} />
