@@ -1,12 +1,22 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { useAppContext } from "../libs/contextLib";
+import { userService } from '../services/userService';
 
 export default function HeaderComponent() {
 
     const { isAuthenticated, userHasAuthenticated } = useAppContext();
+    
+    let history = useHistory();
 
     function handleLogout() {
         userHasAuthenticated(false);
+        userService.logout()
+                .then(
+                    () => {
+                        history.push('/');
+                    }
+                );
     }
     return (
         <div>
@@ -19,9 +29,9 @@ export default function HeaderComponent() {
                 </div>
             </header>
             {isAuthenticated
-                ?   <nav className="adm" onClick={handleLogout}><span>
+                ?   <nav className="adm"><span>
                         Jsi přihlášen jako administrátor &nbsp;
-                        <a href="/"><b>/&nbsp;Odhlásit&nbsp;/</b></a>&nbsp;
+                        <a href="#" onClick={handleLogout}><b>/&nbsp;Odhlásit&nbsp;/</b></a>&nbsp;
                     </span ></nav>
                 : ""
             }

@@ -3,7 +3,7 @@ import Countdown from 'react-countdown';
 import axios from 'axios';
 import { useAppContext } from '../libs/contextLib';
 
-export default function Home() {
+export default function AdministrationNewsNew() {
 
     const { REST_API, options, startDate, nextYearReady } = useAppContext();
     const [newsItems, setNewsItems] = useState();
@@ -21,7 +21,7 @@ export default function Home() {
 
     return (
         <div id="content">
-            <h2>Novinky</h2>
+            <h2>Nová novinka xxx</h2>
 
             {nextYearReady ? <div className="news-item">
                                 Do startu VH půlmaratonu zbývá

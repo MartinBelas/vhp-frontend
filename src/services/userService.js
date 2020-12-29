@@ -1,8 +1,15 @@
+import { useHistory } from "react-router-dom";
 const COMPETITION = "VHP";
 
+/* 
+Login and logout Admins.
+Registration of new admin users via react frontend is not supported, it's possible via REST API only (you can use Postman,...)
+*/
 export const userService = {
     login,
-    logout
+    logout,
+    getCurrentUser,
+    HandleIsAuthenticated
 };
 
 function login(email, password) {
@@ -15,16 +22,6 @@ function login(email, password) {
             "password": password
         }
     }
-
-    // const requestOptions = {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ username, password }),
-    // };
-
-    // const requestOptions = {
-    //     headers: { 'api-key': process.env.REACT_APP_API_KEY }
-    // };
 
     const requestOptions = {
         method: 'POST',
@@ -40,20 +37,64 @@ function login(email, password) {
 
             return response.json();
         })
-        .then(user => {
+        .then(responseData => {
             //TODO
+            let user = responseData.data;
+            console.log('user: ', user) //TODO remove
             // login successful if there's a jwt token in the response
-            if (user && user.token) {
+            if (user && user.accessToken) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                // localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('user', JSON.stringify(user));
             }
 
-            return user;
+            return responseData;
         });
 }
 
 //TODO
 function logout() {
+    
+    let user = JSON.parse(localStorage.getItem('user'));
+    user.accessToken = "";
+
+    const payload = {
+        "logout": user
+    }
+    
     // remove user from local storage to log user out
-    // localStorage.removeItem('user');
+    localStorage.removeItem('user');
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    };
+
+    return fetch('/api/auth/logout', requestOptions)
+        .then(response => {
+            // if (!response.ok) {
+            //     return Promise.reject(response.statusText);
+            // }
+
+            return response;
+        }).catch(err => {
+            //console.log('LOGOUT err: ', err)
+        })
 }
+
+// Get stored user information (including JWT)
+function getCurrentUser() {
+    return JSON.parse(localStorage.getItem('user'));
+} 
+
+function HandleIsAuthenticated(value) {
+
+    console.log('000000000 IsLoggedIn');
+    console.log('000000000 IsLoggedIn isAuthenticated: ', value);
+    
+    let history = useHistory();
+
+    if (!value) {
+        history.push('/');
+    }
+} 

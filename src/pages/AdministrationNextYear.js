@@ -3,17 +3,12 @@ import axios from 'axios';
 import Calendar from 'react-calendar';
 import { useAppContext } from '../libs/contextLib';
 import dateFormat from 'dateformat';
-import config from '../config';
 
-const REST_API = config.restApi;
-const options = {
-    headers: { 'api-key': process.env.REACT_APP_API_KEY }
-};
 const DEFAULT_NEXT_YEAR = dateFormat(Date(), "yyyy-mm-dd");
 
 export default function AdministrationNextYear() {
 
-    const { isAuthenticated } = useAppContext();
+    const { isAuthenticated, REST_API, options } = useAppContext();
     const [lastDate, setLastDate] = useState();
     const [nextDate, setNextDate] = useState(DEFAULT_NEXT_YEAR);
     const [categories, setCategories] = useState([]);
@@ -39,7 +34,7 @@ export default function AdministrationNextYear() {
                 console.log('ERROR: ', err);
                 // setError(err.message);
             })
-    }, []);
+    }, [REST_API, options]);
 
     function onDateChange(date) {
         setNextDate(dateFormat(date, "yyyy-mm-dd"));

@@ -23,6 +23,8 @@ import Photos from '../pages/Photos';
 import Contact from '../pages/Contact';
 import Administration from '../pages/Administration';
 import AdministrationNextYear from '../pages/AdministrationNextYear';
+import AdministrationNews from '../pages/AdministrationNews';
+import AdministrationNewsNew from '../pages/AdministrationNewsNew';
 import NotFound from '../pages/NotFound';
 
 export default function Routes() {
@@ -32,6 +34,9 @@ export default function Routes() {
             <Route exact path="/login" component={Login} />
             <Route exact path="/adm" component={Administration} />
             <Route exact path="/adm/novy-rocnik" component={AdministrationNextYear} />
+            <Route exact path="/adm/novinky" component={AdministrationNews} />
+            <Route exact path="/adm/novinky/:id" component={AdministrationNews} />
+            <Route exact path="/adm/novinky?nova" component={AdministrationNewsNew} />
             <Route exact path='/' component={Home} />
             <Route exact path='/registrace' component={Registration} />
             <Route exact path='/registracni-formular' component={RegistrationForm} />

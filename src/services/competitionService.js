@@ -1,5 +1,6 @@
 import config from '../config';
-const REST_API = config.competitionApi;
+//const REST_API = config.competitionApi;
+import { useAppContext } from '../libs/contextLib';
 
 export const competitionService = {
     getLastYear
@@ -7,6 +8,8 @@ export const competitionService = {
 
 function getLastYear() {
 
+    const { REST_API } = useAppContext();
+    
     const requestOptions = {
         method: 'GET',
         headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' }

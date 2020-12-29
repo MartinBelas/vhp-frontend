@@ -21,6 +21,7 @@ export default function App() {
     const [startDate, setStartDate] = useState(0);
     const [eventCounter, setEventCounter] = useState(0);
     const [nextYearReady, setNextYearReady] = useState(false);
+    const [latestNewsItems, setLatestNewsItems] = useState([]);
     
     useEffect(() => {
         axios.get(REST_API + '/years/next', options)
@@ -39,7 +40,7 @@ export default function App() {
 
     return (
         <div>
-            <AppContext.Provider value={{ REST_API, options, isAuthenticated, userHasAuthenticated, startDate }}>
+            <AppContext.Provider value={{ REST_API, options, isAuthenticated, userHasAuthenticated, startDate, latestNewsItems, setLatestNewsItems }}>
                 <Router history={history}>
                     <HeaderComponent />
                     {nextYearReady ? <center><h2>{eventCounter}. ročník jistebnického VH půlmaratónu se bude konat {startDate}</h2></center> : <br/>}

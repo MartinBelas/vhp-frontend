@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-
 import { useAppContext } from "../libs/contextLib";
 import { userService } from '../services/userService';
-
 
 export default function Login() {
 
@@ -27,19 +25,15 @@ export default function Login() {
                 .then(
                     resp => {
                         if (resp.isOk) {
-                            //TODO this.props.loginAction(resp.data.email);
                             userHasAuthenticated(true);
-                            console.log('LOGIN OK');
                             history.push('/adm')
-
                         } else {
-                            //TODO this.props.loginAction("");
+                            //console.log('LOGIN failed: ', resp);
                         }
-                        // history.push('/');
                     },
                     error => {
                         userHasAuthenticated(false);
-                        console.log('LOGIN failed');
+                        //console.log('LOGIN failed: ', error);
                     }
                 );
         }
@@ -79,7 +73,7 @@ export default function Login() {
                     <button type="submit">Přihlásit</button>
                     <br/><br/>
                     {/* <a href="#">Zapomenuté heslo?</a> //TODO */}
-                    </div>
+                </div>
             </form>
         </div>
         </div>
