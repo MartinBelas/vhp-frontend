@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-const COMPETITION = "VHP";
+const COMPETITION = "VHP"; //TODO - make it global
 
 /* 
 Login and logout Admins.
@@ -8,8 +8,7 @@ Registration of new admin users via react frontend is not supported, it's possib
 export const userService = {
     login,
     logout,
-    getCurrentUser,
-    HandleIsAuthenticated
+    getCurrentUser
 };
 
 function login(email, password) {
@@ -40,7 +39,6 @@ function login(email, password) {
         .then(responseData => {
             //TODO
             let user = responseData.data;
-            console.log('user: ', user) //TODO remove
             // login successful if there's a jwt token in the response
             if (user && user.accessToken) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -79,7 +77,7 @@ function logout() {
             return response;
         }).catch(err => {
             //console.log('LOGOUT err: ', err)
-        })
+        });
 }
 
 // Get stored user information (including JWT)
@@ -87,14 +85,3 @@ function getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));
 } 
 
-function HandleIsAuthenticated(value) {
-
-    console.log('000000000 IsLoggedIn');
-    console.log('000000000 IsLoggedIn isAuthenticated: ', value);
-    
-    let history = useHistory();
-
-    if (!value) {
-        history.push('/');
-    }
-} 

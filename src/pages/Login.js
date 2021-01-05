@@ -13,7 +13,7 @@ export default function Login() {
     const [password, setPassword] = useState("");
 
     function validateForm() {
-        return email.length > 0 && password.length > 0
+        return (email.length > 0 && password.length > 0);
     }
 
     function handleSubmit(event) {
@@ -37,13 +37,6 @@ export default function Login() {
                     }
                 );
         }
-
-        //TODO
-        // // Extract the JWT from the response
-        // const { jwt_token } = await response.json()
-        // //...
-        // // Do something the token in the login method
-        // await login({ jwt_token })
     }
 
     return (

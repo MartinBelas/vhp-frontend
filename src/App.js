@@ -34,7 +34,7 @@ export default function App() {
                 }
             })
             .catch(err => {
-                //TODO setError(err.message);
+                console.log('err: ', err.mesage);
             })
     }, []);
 

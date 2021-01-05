@@ -4,190 +4,201 @@ import {
     useParams,  
     BrowserRouter as Router,
     Route,
-    Switch, 
-    useLocation } from 'react-router-dom';
-import axios from 'axios';
-import Calendar from 'react-calendar';
-import dateFormat from 'dateformat';
+    Switch } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+import { newsService } from '../services/newsService';
 import { useAppContext } from '../libs/contextLib';
-import AdministrationNewsNew from '../pages/AdministrationNewsNew';
-import { AppContext } from "../libs/contextLib";
 
-const LATEST_NEWS_COUNT = 2;
 
 export default function AdministrationNews() {
     
-    function handleCreateItem(event) {
-        //setNewDescription(event.target.value);
-    }
+    const { isAuthenticated } = useAppContext();
+    const [newsItems, setNewsItems] = useState();
+    
+    useEffect(() => {
+        newsService.GetLatestNews()
+        .then(data => {
+            setNewsItems(data);
+            return data;
+        })
+        .catch(err => {
+            console.log('err: ', err.message);
+        })
+    },[])
 
-    function handleRemoveItem(id) {
-        // const newList = categories.filter((item) => item.id !== id);
-        // setCategories(newList);
-    }
+    let history = useHistory();
 
-    function handleUpdateItem(event) {
-        // setNewId(event.target.value);
-    }
-
-
-    // function handleAddCategory() {
-    //     const newList = categories.concat({ "id":newId, "description":newDescription });
-    //     setCategories(newList);
-    //     setNewId('');
-    //     setNewDescription('');
-    // }
-
-
-    // function handleRemoveRace(frontendId) {
-    //     const newList = races.filter((item) => item.frontendId !== frontendId);
-    //     setRaces(newList);
-    // }
-
-    // function handleRaceChange(event) {
-    //     setNewRaceName(event.target.value);
-    // }
-
-    // function handleAddRace() {
-    //     let maxId = 0;
-    //     if (races.length > 0) {
-    //         maxId = races.reduce((a, b) =>  a.frontendId > b.frontendId ? a : b ).frontendId;
-    //     }
-    //     maxId++;
-    //     const newRace = { "frontendId":maxId, "name":newRaceName };
-    //     let newList = races.concat(newRace);
-    //     setRaces(newList);
-    //     setNewRaceName('');
-    // }
-
-    // function handleStartRegistrations() {
-    //     const payload = {
-    //         "categories": categories,
-    //         "races":races
-    //     }
-
-    //     axios.post(REST_API + '/years/next', payload, options)
-    //         .then(response => {
-    //             //TODO
-    //         })
-    //         .catch(err => {
-    //             console.log('ERROR: ', err);
-    //             // setError(err.message);
-    //         })
-    // }
-
-    return (
-        <Router>
-        <div id="adm-content">
-            <h2>Novinky</h2>
-            
-            <p><Link to="/adm/novinky/nova"><b>Přidat novou novinku</b></Link></p>
-
-            <Switch>
-                <Route path="/adm/novinky/nova" children={<CreateNewNews />} />
-                <Route path="/adm/novinky/:id" children={<OneNews />} />
-                <Route path="/adm/novinky" children={<NewsList />} />
-            </Switch>
-        </div>
-        </Router>
-    );
-}
-
-function CreateNewNews() {
-    // We can use the `useParams` hook here to access
-    // the dynamic pieces of the URL.
-  
-    return (
-        <div>
-            <h3>Vytvořní nové novinky</h3>
-        </div>
-    );
-}
-
-const fetchNewsItem = async (api, options) => {
-    const response = await axios.get(api, options);
-    return response.data;
-}
-
-function OneNews() {
-
-    let { id } = useParams();
-
-    const { isAuthenticated, REST_API, options, latestNewsItems } = useAppContext();
-
-    let item = latestNewsItems.find(x => x.id === id);
-    console.log('------------item A: ', item);
-
-    if (item === undefined) {
-        console.log('------------item: B');
-        fetchNewsItem(REST_API + '/news/'+id, options)
-            .then( item => {
-                console.log('------------item: B: ', item);
-                const timestamp = new Date(item.date);
-                const date = timestamp.toLocaleDateString();
-                return (
-                    <div className="news-item" key={item.id}>
-                        <p className="date">{date}</p> <h3>{item.title}</h3>
-                        <div>{item.content}</div>
-                    </div>
-                );
-            })
-    } else {
-        console.log('------------item: C: ', item);
-        const timestamp = new Date(item.date);
-        const date = timestamp.toLocaleDateString();
+    function NewsList() {
         return (
-            <div className="news-item" key={item.id}>
-                <p className="date">{date}</p> <h3>{item.title}</h3>
-                <div>{item.content}</div>
+            <div>
+    
+                {isAuthenticated ? 
+                    <p><Link to="/adm/novinky/nova"><b>Přidat novou novinku</b></Link></p>
+                    : ""
+                }
+        
+                {newsItems ? newsItems.map((item) => {
+                    const timestamp = new Date(item.date);
+                    const date = timestamp.toLocaleDateString();
+                    return <div className="news-item" key={item.id}>
+                            <p className="date">{date} <Link to={"/adm/novinky/"+item.id}><b>{item.title}</b></Link></p>
+                            <div>{item.content}</div>
+                        </div>
+        
+                }) : ""}
             </div>
         );
     }
-}
+    
+    function OneNews() {
 
-function NewsList() {
+        const [newsItem, setNewsItem] = useState();
 
-    const { isAuthenticated, REST_API, options, latestNewsItems, setLatestNewsItems } = useAppContext();
-    const [newsItems, setNewsItems] = useState();
-    const previewLength = 200;
+        let { id } = useParams();
 
-    useEffect(() => {
-        axios.get(REST_API + '/news', options)
-            .then(response => {
-                let news = [];
-                news.push(...response.data);
-                setNewsItems(news);
-                setLatestNewsItems(news.slice(0, LATEST_NEWS_COUNT));
+        useEffect(() => {
+            newsService.GetOneNewsItem(id)
+            .then(data => {
+                setNewsItem(data);
+                //return data;
             })
             .catch(err => {
-                console.log('err: ', err.message);
+                console.log('err: ', err);
             })
-    }, [REST_API, options]);
+        },[id])
 
-    // We can use the `useParams` hook here to access
-    // the dynamic pieces of the URL.
-    let { id } = useParams();
-  
+        if (newsItem !== undefined) {
+            const timestamp = new Date(newsItem.date);
+            const date = timestamp.toLocaleDateString();
+            return (
+                <div className="news-item" key={newsItem.id}>
+                    <p className="date">{date}</p> <h3>{newsItem.title}</h3>
+                    <div>{newsItem.content}</div>
+                    {isAuthenticated ? 
+                        <p><Link to={"/adm/novinky/edit/"+newsItem.id}>UPRAVIT</Link> ~ <Link to={"/adm/novinky/delete/"+newsItem.id}>ODSTRANIT</Link></p>
+                        : ""
+                    }
+                </div>
+            );
+        } else {
+            return (
+                <div className="news-item">
+                    Asi vítr Máchale... :-)
+                </div>
+            );
+        }
+    }
+
+    function CreateOrUpdateNews(props) {
+
+        const { id } = useParams();
+        let newsItem = (newsItems.find(x => x.id === id));
+        if (newsItem === undefined) {
+            newsItem = {title: "", content: ""}
+        }
+        const [newTitle, setNewTitle] = useState(newsItem.title);
+        const [newContent, setNewContent] = useState(newsItem.content);
+
+        function validateForm() {
+            return (newTitle.length > 0 && newContent.length > 0);
+        }
+        
+        function handleSubmit(event) {
+            event.preventDefault();
+        
+            if (isAuthenticated && validateForm()) {
+        
+                if (props.operation === "create") {
+                    newsService.createOneNews(newTitle, newContent)
+                    .then(
+                        resp => {
+                            console.log('CreateNewNews - resp: ', resp)
+                            if (resp && resp.isOk) {
+                                history.push('/adm/novinky')
+                            } else {
+                                //TODO
+                            }
+                        },
+                        error => {
+                            //TODO
+                            //console.log('err: ', error);
+                            console.log('CreateNewNews - err: ', error)
+                        }
+                    );
+                } else if (props.operation === "edit") {
+                    console.log('UpdateNewNews - id: ', id)
+                    newsService.updateOneNews(id, newTitle, newContent)
+                    .then(
+                        resp => {
+                            console.log('UpdateNewNews - resp: ', resp)
+                            if (resp && resp.isOk) {
+                                history.push('/adm/novinky')
+                            } else {
+                                //TODO
+                            }
+                        },
+                        error => {
+                            //TODO
+                            //console.log('err: ', error);
+                            console.log('UpdateNewNews - err: ', error)
+                        }
+                    );
+                }
+            }
+        }
+
+        return (
+            <div>
+                <h3>
+                {(id === undefined) ? 
+                    "Vytvoření nové novinky"
+                    : "Úprava novinky"
+                }
+                </h3>
+
+                {/* {newsItem ? setNewTitle(newsItem.title) : ""} */}
+    
+                <form onSubmit={handleSubmit}>
+    
+                    <div className="form-group">
+                        <label>Nadpis: </label>
+                        <input 
+                            type="text"
+                            value={newTitle}
+                            name="title"
+                            onChange={e => setNewTitle(e.target.value)} />
+                    </div>
+    
+                    <div className="form-group">
+                        <label>Obsah: </label>
+                        <textarea  cols="60" rows="10" 
+                            name="content"
+                            type="text"
+                            value={newContent}
+                            onChange={e => setNewContent(e.target.value)} />
+                    </div>
+    
+                    <br/>
+                    <div className="form-group">
+                        <button type="submit">Uložit</button>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+
     return (
-        <div>
-        <AppContext.Provider value={{ latestNewsItems, setLatestNewsItems }}>
-            {newsItems ? newsItems.map((item) => {
-                const timestamp = new Date(item.date);
-                const date = timestamp.toLocaleDateString();
-                if (item.content.length > previewLength) 
-                    return  <div className="news-item" key={item.id}>
-                                <p className="date">{date} <b>{item.title}</b></p>
-                                <div>{item.content.substring(1, previewLength)} <i>(zkráceno)</i></div>
-                                <br /><Link to={"/adm/novinky/"+item.id}>Zobrazit celý příspěvek</Link>
-                            </div>
-                else 
-                    return  <div className="news-item" key={item.id}>
-                                <p className="date">{date} <b>{item.title}</b></p>
-                                <div>{item.content}</div>
-                            </div>
-
-            }) : ""}
-        </AppContext.Provider>
-        </div>
+        <Router>
+            <div id="adm-content">
+                <h2>Novinky</h2>
+                
+                <Switch>
+                    <Route path="/adm/novinky/nova" children={<CreateOrUpdateNews operation="create" />} />
+                    <Route path="/adm/novinky/edit/:id" children={<CreateOrUpdateNews operation="edit" />} />
+                    <Route path="/adm/novinky/:id" children={<OneNews />} />
+                    <Route path="/adm/novinky" children={<NewsList />} />
+                </Switch>
+            </div>
+        </Router>
     );
 }

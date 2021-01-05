@@ -3,7 +3,8 @@ import { Switch } from "react-router-dom";
 import Route from "./Route";
 
 import Login from "../pages/Login";
-import Home from '../pages/Home';
+import OneNews from '../pages/Home';
+import LatestNews from '../pages/Home';
 import Registration from '../pages/Registration';
 import RegistrationForm from '../pages/RegistrationForm';
 import Results from '../pages/Results';
@@ -24,7 +25,6 @@ import Contact from '../pages/Contact';
 import Administration from '../pages/Administration';
 import AdministrationNextYear from '../pages/AdministrationNextYear';
 import AdministrationNews from '../pages/AdministrationNews';
-import AdministrationNewsNew from '../pages/AdministrationNewsNew';
 import NotFound from '../pages/NotFound';
 
 export default function Routes() {
@@ -36,8 +36,9 @@ export default function Routes() {
             <Route exact path="/adm/novy-rocnik" component={AdministrationNextYear} />
             <Route exact path="/adm/novinky" component={AdministrationNews} />
             <Route exact path="/adm/novinky/:id" component={AdministrationNews} />
-            <Route exact path="/adm/novinky?nova" component={AdministrationNewsNew} />
-            <Route exact path='/' component={Home} />
+            <Route exact path='/' component={LatestNews} />
+            <Route exact path='/novinky' component={LatestNews} />
+            <Route exact path='/novinky/:id' component={OneNews} />
             <Route exact path='/registrace' component={Registration} />
             <Route exact path='/registracni-formular' component={RegistrationForm} />
             <Route exact path='/vysledky' component={Results} />
