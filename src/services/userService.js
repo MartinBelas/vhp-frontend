@@ -1,4 +1,3 @@
-import { useHistory } from "react-router-dom";
 const COMPETITION = "VHP"; //TODO - make it global
 
 /* 

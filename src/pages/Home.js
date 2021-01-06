@@ -9,7 +9,7 @@ export const Home = {
     LatestNews
 };
 
-export default function () {
+export default function HomeRouter() {
     return (
         <div id="content">
             <Switch>

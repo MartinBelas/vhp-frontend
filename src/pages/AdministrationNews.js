@@ -102,7 +102,13 @@ export default function AdministrationNews() {
         function validateForm() {
             return (newTitle.length > 0 && newContent.length > 0);
         }
-        
+
+        function refresh() {
+            // need to change the path away and back for Router to see a change :-(
+            history.push('/adm/');
+            history.push('/adm/novinky');
+        } 
+
         function handleSubmit(event) {
             event.preventDefault();
         
@@ -112,12 +118,7 @@ export default function AdministrationNews() {
                     newsService.createOneNews(newTitle, newContent)
                     .then(
                         resp => {
-                            console.log('CreateNewNews - resp: ', resp)
-                            if (resp && resp.isOk) {
-                                history.push('/adm/novinky')
-                            } else {
-                                //TODO
-                            }
+                            refresh();
                         },
                         error => {
                             //TODO
@@ -126,16 +127,10 @@ export default function AdministrationNews() {
                         }
                     );
                 } else if (props.operation === "edit") {
-                    console.log('UpdateNewNews - id: ', id)
                     newsService.updateOneNews(id, newTitle, newContent)
                     .then(
                         resp => {
-                            console.log('UpdateNewNews - resp: ', resp)
-                            if (resp && resp.isOk) {
-                                history.push('/adm/novinky')
-                            } else {
-                                //TODO
-                            }
+                            refresh();
                         },
                         error => {
                             //TODO
@@ -187,6 +182,31 @@ export default function AdministrationNews() {
         );
     }
 
+    function DeleteOneNews() {
+
+        let { id } = useParams();
+
+        if (isAuthenticated) {
+            newsService.deleteOneNews(id)
+                .then(() => {
+                    history.push('/adm');
+                    history.push('/adm/novinky');
+                })
+                .catch(err => {
+                    console.log('err: ', err);
+                })
+        }
+
+        return (
+            <div className="news-item">
+                <p>A je to... :-)</p>
+                <p>Novika byla odstraněna.</p>
+                <p><Link to="/adm/novinky/">Výpis novinek</Link></p>
+            </div>
+        );
+
+    }
+
     return (
         <Router>
             <div id="adm-content">
@@ -195,6 +215,7 @@ export default function AdministrationNews() {
                 <Switch>
                     <Route path="/adm/novinky/nova" children={<CreateOrUpdateNews operation="create" />} />
                     <Route path="/adm/novinky/edit/:id" children={<CreateOrUpdateNews operation="edit" />} />
+                    <Route path="/adm/novinky/delete/:id" children={<DeleteOneNews />} />
                     <Route path="/adm/novinky/:id" children={<OneNews />} />
                     <Route path="/adm/novinky" children={<NewsList />} />
                 </Switch>

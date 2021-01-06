@@ -79,17 +79,12 @@ function createOneNews(title, content) {
             }
             return response.json();
         })
-        .then(responseData => {
-            localStorage.setItem('news', JSON.stringify(responseData));
-            return responseData;
-        })
         .catch(err => {
             console.log('err: ', err);
             return err;
         });
 }
 
-//TODO
 function updateOneNews(id, title, content) {
     
     let user = userService.getCurrentUser();
@@ -97,6 +92,7 @@ function updateOneNews(id, title, content) {
     const payload = {
         "news":
         {
+            "id": id,
             "title": title,
             "content": content
         }
@@ -108,10 +104,8 @@ function updateOneNews(id, title, content) {
         body: JSON.stringify(payload),
     };
 
-    console.log('SERV updateOneNews...')
     return fetch(REST_API + '/news/' + id, requestOptions)
         .then(response => {
-            console.log('SERV updateOneNews response: ', response)
             if (!response.ok) {
                 return Promise.reject(response.statusText);
             }
@@ -127,15 +121,16 @@ function updateOneNews(id, title, content) {
         });
 } 
 
-//TODO
 function deleteOneNews(id) {
+
+    let user = userService.getCurrentUser();
 
     const requestOptions = {
         method: 'DELETE',
-        headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' }
+        headers: { 'api-key': process.env.REACT_APP_API_KEY, 'authorization': user.accessToken, 'Content-Type': 'application/json' }
     };
 
-    return fetch(REST_API + '/news?id=' + id, requestOptions)
+    return fetch(REST_API + '/news/' + id, requestOptions)
             .then(response => {
                 if (!response.ok) {
                     return Promise.reject(response.statusText);
