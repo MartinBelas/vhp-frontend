@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from "@material-ui/core/Button";
-import { TextField  } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
 import validate from '../services/validator.js'
 
@@ -41,14 +41,14 @@ class ApplicationForm extends React.Component {
 				value: '',
 				valid: false,
 				validationRules: {
-				  minLength: 3
+				  minLength: 2
 				}
             },
 			surname: {
             	value: '',
 				valid: false,
 				validationRules: {
-				  minLength: 3
+				  minLength: 2
 				}
             },
             email: {
@@ -60,7 +60,7 @@ class ApplicationForm extends React.Component {
             },
 			tel: {
             	value: '',
-				valid: false,
+				valid: true,
             },
 			year: {
                 value: '',
@@ -69,6 +69,7 @@ class ApplicationForm extends React.Component {
 						minLength: 4,
 						maxLength: 4,
 						minValue: 1900,
+						maxValue: 2099,
 						isRequired: true
 					}				
             },
@@ -93,7 +94,24 @@ class ApplicationForm extends React.Component {
             },
 			club: {
             	value: '',
+				valid: true,
+            },
+			race: {
+            	value: '',
 				valid: false,
+				validationRules: {
+					isRequired: true,
+				},
+				options: [
+					{ value: 'galerijni', displayValue: 'Běh 3,6 km Galerijní ulicí' },
+					{ value: 'ctvrtmaraton', displayValue: '1/4 maratón'},
+					{ value: 'pulmaraton', displayValue: '1/2 maratón'},
+					{ value: 'maraton', displayValue: 'Maratón'}
+				]
+			},
+			notes: {
+            	value: '',
+				valid: true,
             }
 		}
 	};
@@ -185,13 +203,15 @@ class ApplicationForm extends React.Component {
 				
 			<br />	
 			<TextField name="sex" label="Pohlaví" variant="outlined" margin="dense"
-				required
+				select required style={{minWidth: 120}}
 				options={this.state.formControls.sex.options}
 				value={this.state.formControls.sex.value} 
 				onChange={this.handleChange} 
-				error={!this.state.formControls.sex.valid}
-			/>
-			&nbsp;  
+				error={!this.state.formControls.sex.valid} >
+					<option value="M">&nbsp; Muž </option>
+  					<option value="F">&nbsp; Žena </option>
+			</TextField>
+			&nbsp;  &nbsp;  
 			<TextField name="year" label="Rok naroz." variant="outlined" margin="dense"
 				type="number" required
 				value={this.state.formControls.year.value} 
@@ -210,30 +230,28 @@ class ApplicationForm extends React.Component {
 			<TextField name="club" label="Klub" variant="outlined" margin="dense"
 				value={this.state.formControls.club.value} 
 				onChange={this.handleChange} />
-				
-
 
 		</fieldset>
 		
 		<br />
 		<fieldset>
-			<legend>Závod</legend>
-			<label>Závod: </label>
-			<select value={this.state.value} onChange={this.handleChange}>
-				<option value="galerijni">Běh 3,6 km Galerijní ulicí</option>
-				<option value="ctvrtmaraton">1/4 maratón</option>
-				<option value="pulmaraton">1/2 maratón</option>
-				<option value="pulmaraton">Maratón</option>
-			</select>
+		<legend>Závod</legend>
+			<TextField name="race" label="Závod" variant="outlined" margin="dense" select  style={{minWidth: 250}}
+					value={this.state.formControls.race.value} 
+					onChange={this.handleChange} >
+						<option value="galerijni">&nbsp;  Běh 3,6 km Galerijní ulicí</option>
+  						<option value="ctvrtmaraton">&nbsp;  1/4 maratón</option>
+						<option value="pulmaraton">&nbsp;  1/2 maratón</option>
+  						<option value="maraton">&nbsp;  Maratón</option>
+			</TextField>	
 		</fieldset>
         
 		<br />  
         <fieldset>        
         <legend>Poznámky </legend>
-        <textarea 
-			value={this.state.formIsValid}
-			onChange={this.handleChange}
-		/>
+			<TextField name="notes" label="Poznámky" variant="outlined" margin="dense" multiline
+				value={this.state.formControls.notes.value} 
+				onChange={this.handleChange} />
         </fieldset>
         
 		<br />
