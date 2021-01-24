@@ -11,11 +11,12 @@ export default function AdministrationNextYear() {
     const { isAuthenticated, REST_API, options } = useAppContext();
     const [lastDate, setLastDate] = useState();
     const [nextDate, setNextDate] = useState(DEFAULT_NEXT_YEAR);
-    const [categories, setCategories] = useState([]);
-    const [newId, setNewId] = useState('');
-    const [newDescription, setNewDescription] = useState('');
     const [races, setRaces] = useState([]);
-    const [newRaceName, setNewRaceName] = useState('');
+    const [newRaceId, setNewRaceId] = useState('');
+    const [newRaceDescription, setNewRaceDescription] = useState('');
+    const [categories, setCategories] = useState([]);
+    const [newCategoryId, setNewCategoryId] = useState('');
+    const [newCategoryDescription, setNewCategoryDescription] = useState('');
 
     useEffect(() => {
         axios.get(REST_API + '/years/last', options)
@@ -45,41 +46,40 @@ export default function AdministrationNextYear() {
         setCategories(newList);
     }
 
-    function handleIdChange(event) {
-        setNewId(event.target.value);
+    function handleCategoryIdChange(event) {
+        setNewCategoryId(event.target.value);
     }
 
-    function handleDescriptionChange(event) {
-        setNewDescription(event.target.value);
+    function handleCategoryDescriptionChange(event) {
+        setNewCategoryDescription(event.target.value);
     }
 
     function handleAddCategory() {
-        const newList = categories.concat({ "id":newId, "description":newDescription });
+        const newList = categories.concat({ "id":newCategoryId, "description":newCategoryDescription });
         setCategories(newList);
-        setNewId('');
-        setNewDescription('');
+        setNewCategoryId('');
+        setNewCategoryDescription('');
     }
 
-
-    function handleRemoveRace(frontendId) {
-        const newList = races.filter((item) => item.frontendId !== frontendId);
+    function handleRemoveRace(id) {
+        const newList = races.filter((item) => item.id !== id);
         setRaces(newList);
     }
 
-    function handleRaceChange(event) {
-        setNewRaceName(event.target.value);
+    function handleRaceDescriptionChange(event) {
+        setNewRaceDescription(event.target.value);
     }
 
     function handleAddRace() {
         let maxId = 0;
         if (races.length > 0) {
-            maxId = races.reduce((a, b) =>  a.frontendId > b.frontendId ? a : b ).frontendId;
+            maxId = races.reduce((a, b) =>  a.id > b.id ? a : b ).id;
         }
         maxId++;
-        const newRace = { "frontendId":maxId, "name":newRaceName };
+        const newRace = { "id":maxId, "description":newRaceDescription };
         let newList = races.concat(newRace);
         setRaces(newList);
-        setNewRaceName('');
+        setNewRaceDescription('');
     }
 
     function handleStartRegistrations() {
@@ -127,12 +127,12 @@ export default function AdministrationNextYear() {
                             {categories.map((item) => (
                                 <li key={item.id}>
                                     <span>{item.id}</span> - <span>{item.description}</span>  
-                                    <button type="button" onClick={() => handleRemoveCategory(item.id)}>Odstranit</button>
+                                    &nbsp; <button type="button" onClick={() => handleRemoveCategory(item.id)}>Odstranit</button>
                                 </li>
                             ))}
                         </ul>
-                        Nová kategorie <input type="text" size="4" value={newId} onChange={handleIdChange} /> &nbsp;
-                        popis <input type="text" value={newDescription} onChange={handleDescriptionChange} /> &nbsp;
+                        Nová kategorie <input type="text" size="4" value={newCategoryId} onChange={handleCategoryIdChange} /> &nbsp;
+                        popis <input type="text" value={newCategoryDescription} onChange={handleCategoryDescriptionChange} /> &nbsp;
                         <button type="button" onClick={handleAddCategory}>
                             Přidej kategorii
                         </button>
@@ -146,13 +146,13 @@ export default function AdministrationNextYear() {
                         <ul>
                             <li>ZÁVOD</li>
                             {races.map((item) => (
-                                <li key={item.frontendId}>
-                                    <span>{item.frontendId}</span> - <span>{item.name}</span>  
-                                    <button type="button" onClick={() => handleRemoveRace(item.frontendId)}>Odstranit</button>
+                                <li key={item.id}>
+                                    <span>{item.id}</span> - <span>{item.description}</span>  
+                                    &nbsp; <button type="button" onClick={() => handleRemoveRace(item.id)}>Odstranit</button>
                                 </li>
                             ))}
                         </ul>
-                        Nový závod <input type="text" value={newRaceName} onChange={handleRaceChange} /> &nbsp;
+                        Nový závod, název <input type="text" value={newRaceDescription} onChange={handleRaceDescriptionChange} /> &nbsp;
                         <button type="button" onClick={handleAddRace}>
                             Přidej závod
                         </button>
