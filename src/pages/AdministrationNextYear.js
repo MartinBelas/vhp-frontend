@@ -12,7 +12,6 @@ export default function AdministrationNextYear() {
     const [lastDate, setLastDate] = useState();
     const [nextDate, setNextDate] = useState(DEFAULT_NEXT_YEAR);
     const [races, setRaces] = useState([]);
-    const [newRaceId, setNewRaceId] = useState('');
     const [newRaceDescription, setNewRaceDescription] = useState('');
     const [categories, setCategories] = useState([]);
     const [newCategoryId, setNewCategoryId] = useState('');
@@ -89,7 +88,7 @@ export default function AdministrationNextYear() {
             "races":races
         }
 
-        axios.post(REST_API + '/years/next', payload, options)
+        axios.post(REST_API + '/years', payload, options)
             .then(response => {
                 //TODO
             })
