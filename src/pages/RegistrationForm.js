@@ -1,28 +1,17 @@
 import React, { useState } from 'react';
+import { useAppContext } from '../libs/contextLib';
 import Button from "@material-ui/core/Button";
 import { TextField } from '@material-ui/core';
 
 import validate from '../services/validator.js'
 
 function ApplicationForm() {
+
+	const { REST_API } = useAppContext();
 		
 	const [formIsValid, setFormIsValid] = useState(false);
 	const [formControls, setFormControls] = useState(
 		{
-			name: {
-				value: '',
-				valid: false,
-				validationRules: {
-					minLength: 2
-				}
-			},
-			surname: {
-				value: '',
-				valid: false,
-				validationRules: {
-					minLength: 2
-				}
-			},
 			email: {
 				value: '',
 				valid: false,
@@ -30,11 +19,21 @@ function ApplicationForm() {
 					minLength: 6
 				}
 			},
-			tel: {
+			firstname: {
 				value: '',
-				valid: true,
+				valid: false,
+				validationRules: {
+					minLength: 2
+				}
 			},
-			year: {
+			lastname: {
+				value: '',
+				valid: false,
+				validationRules: {
+					minLength: 2
+				}
+			},
+			birth: {
 				value: '',
 				valid: false,
 				validationRules: {
@@ -63,6 +62,10 @@ function ApplicationForm() {
 					isRequired: true,
 					minLength: 2
 				}
+			},
+			phone: {
+				value: '',
+				valid: true,
 			},
 			club: {
 				value: '',
@@ -110,32 +113,44 @@ function ApplicationForm() {
 
 		setFormControls(updatedControls);
 		setFormIsValid(formIsValid);
-
-		console.dir('VALID: ' + formIsValid);
 	}
 
 	function handleSubmit(event) {
 		event.preventDefault();
 		
 		let payload = new Map();
-		payload['name'] = formControls.name.value;
-		payload['surname'] = (formControls.surname.value);
 		payload['email'] = formControls.email.value;
-		payload['tel'] = formControls.tel.value;
+		payload['firstname'] = formControls.firstname.value;
+		payload['lastname'] = (formControls.lastname.value);
+		payload['birth'] = formControls.birth.value;
 		payload['sex'] = formControls.sex.value;
-		payload['year'] = formControls.year.value;
 		payload['home'] = formControls.home.value;
+		payload['phone'] = formControls.phone.value;
 		payload['club'] = formControls.club.value;
 		payload['race'] = formControls.race.value;
 		payload['notes'] = formControls.notes.value;
 
 		payload = JSON.stringify(payload);
-		//console.dir(" --> PAYLOAD : ", payload); //TODO delete
+		console.dir(" --> PAYLOAD : ", payload); //TODO delete
 
-		fetch('/api/form-submit-url', {
+		const requestOptions = {
 			method: 'POST',
-			body: payload,
-		});
+			headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' },
+			body: payload
+		};
+		console.dir(" --> REST_API : ", REST_API + '/registrations'); //TODO delete
+
+		fetch(REST_API + '/registrations', requestOptions)
+			.then(response => {
+				console.dir(" --> response.ok : ", response.ok); //TODO delete
+				if (!response.ok) {
+					return Promise.reject(response.statusText);
+				}
+				return response.json();
+			})
+			.catch(err => {
+                console.log('Registration error: ', err);
+            })
 	}
 
 	return (
@@ -143,50 +158,50 @@ function ApplicationForm() {
 
 			<fieldset>
 				<legend>Identifikace závodníka</legend>
-				<TextField name="name" label="Jméno" variant="outlined" margin="dense"
+				<TextField name="firstname" label="Jméno" variant="outlined" margin="dense"
 					required
-					value={formControls.name.value}
+					value={formControls.firstname.value}
 					onChange={e => handleChange(e)}
-					error={!formControls.name.valid}
+					error={!formControls.firstname.valid}
 				/>
 			&nbsp;
-			<TextField name="surname" label="Příjmení" variant="outlined" margin="dense"
+			<TextField name="lastname" label="Příjmení" variant="outlined" margin="dense"
 					required
-					value={formControls.surname.value}
+					value={formControls.lastname.value}
 					onChange={e => handleChange(e)}
-					error={!formControls.surname.valid}
+					error={!formControls.lastname.valid}
 				/>
 
-				<br />
-				<TextField name="email" label="E-mail" variant="outlined" margin="dense"
-					type="email" required
-					value={formControls.email.value}
-					onChange={e => handleChange(e)}
-					error={!formControls.email.valid}
-				/>
+			<br />
+			<TextField name="email" label="E-mail" variant="outlined" margin="dense"
+				type="email" required
+				value={formControls.email.value}
+				onChange={e => handleChange(e)}
+				error={!formControls.email.valid}
+			/>
 			&nbsp;
-			<TextField id="tel" label="Telefon" variant="outlined" margin="dense"
-					name="tel"
-					value={formControls.tel.value}
+			<TextField id="phone" label="Telefon" variant="outlined" margin="dense"
+					name="phone"
+					value={formControls.phone.value}
 					onChange={e => handleChange(e)}
 				/>
 
-				<br />
-				<TextField name="sex" label="Pohlaví" variant="outlined" margin="dense"
-					select required style={{ minWidth: 120 }}
-					options={formControls.sex.options}
-					value={formControls.sex.value}
-					onChange={e => handleChange(e)}
-					error={!formControls.sex.valid} >
-						<option value="M">&nbsp; Muž </option>
-						<option value="F">&nbsp; Žena </option>
-				</TextField>
+			<br />
+			<TextField name="sex" label="Pohlaví" variant="outlined" margin="dense"
+				select required style={{ minWidth: 120 }}
+				options={formControls.sex.options}
+				value={formControls.sex.value}
+				onChange={e => handleChange(e)}
+				error={!formControls.sex.valid} >
+					<option value="M">&nbsp; Muž </option>
+					<option value="F">&nbsp; Žena </option>
+			</TextField>
 			&nbsp;  &nbsp;
-			<TextField name="year" label="Rok naroz." variant="outlined" margin="dense"
+			<TextField name="birth" label="Rok naroz." variant="outlined" margin="dense"
 					type="number" required
-					value={formControls.year.value}
+					value={formControls.birth.value}
 					onChange={e => handleChange(e)}
-					error={!formControls.year.valid}
+					error={!formControls.birth.valid}
 				/>
 
 				<br />
