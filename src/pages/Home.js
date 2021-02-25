@@ -62,7 +62,7 @@ function LatestNews() {
             if (item.content.length > PREVIEW_LENGHT) 
                 return  <div className="news-item" key={item.id}>
                             <p className="date">{date} <Link to={"/novinky/"+item.id}><b>{item.title}</b></Link></p>
-                            <div>{item.content.substring(1, PREVIEW_LENGHT)} <i>(zkráceno)</i></div>
+                            <div>{item.content.substring(0, PREVIEW_LENGHT)} <i>(zkráceno)</i></div>
                             <br /><Link to={"/novinky/"+item.id}>Zobrazit celý příspěvek</Link>
                         </div>
             else 
