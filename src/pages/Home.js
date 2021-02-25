@@ -35,13 +35,13 @@ function LatestNews() {
 
     useEffect(() => {
         newsService.GetLatestNews(count)
-        .then(data => {
-            setNewsItems(data);
-            return data;
-        })
-        .catch(err => {
-            console.log('err: ', err.message);
-        })
+            .then(data => {
+                setNewsItems(data);
+                return data;
+            })
+            .catch(err => {
+                console.log('err: ', err);
+            })
     },[count])
 
     return (
