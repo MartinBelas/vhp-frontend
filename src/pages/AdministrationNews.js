@@ -92,7 +92,10 @@ export default function AdministrationNews() {
     function CreateOrUpdateNews(props) {
 
         const { id } = useParams();
-        let newsItem = (newsItems.find(x => x.id === id));
+        let newsItem;
+        if (newsItems !== undefined) {
+            newsItem = (newsItems.find(x => x.id === id));
+        }
         if (newsItem === undefined) {
             newsItem = {title: "", content: ""}
         }
