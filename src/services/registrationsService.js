@@ -20,7 +20,7 @@ async function GetAllRegistrations() {
         }
         return await response.json();
     } catch (err) {
-        console.log('err: ', err.mesage);
+        console.log('Get Registrations err: ', err.mesage);
     }
 }
 
@@ -57,7 +57,7 @@ async function CreateRegistration(data) {
         }
         return await response.json();
     } catch (err) {
-        console.log('Registration err: ', err.mesage);
+        console.log('Create Registration err: ', err.mesage);
         return err;
     }
 }

@@ -40,7 +40,7 @@ function LatestNews() {
                 return data;
             })
             .catch(err => {
-                console.log('err: ', err);
+                console.log('LatestNews err: ', err);
             })
     },[count])
 
@@ -90,7 +90,7 @@ function OneNews() {
             return data;
         })
         .catch(err => {
-            console.log('err: ', err);
+            console.log('OneNews err: ', err);
         })
     },[id])
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { TextField } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
 import { registrationsService } from '../services/registrationsService';
 import validate from '../services/validator.js'
 
@@ -181,8 +182,8 @@ function ApplicationForm() {
 				value={formControls.sex.value}
 				onChange={e => handleChange(e)}
 				error={!formControls.sex.valid} >
-					<option value="M">&nbsp; Muž </option>
-					<option value="F">&nbsp; Žena </option>
+					<MenuItem value="M">&nbsp; Muž </MenuItem>
+					<MenuItem value="F">&nbsp; Žena </MenuItem>
 			</TextField>
 			&nbsp;  &nbsp;
 			<TextField name="birth" label="Rok naroz." variant="outlined" margin="dense"
@@ -209,14 +210,15 @@ function ApplicationForm() {
 			<br />
 			<fieldset>
 				<legend>Závod</legend>
-				<TextField name="race" label="Závod" variant="outlined" margin="dense" required select style={{ minWidth: 250 }}
+				<TextField name="race" label="Závod" variant="outlined" margin="dense" 
+					select required style={{ minWidth: 250 }}
 					value={formControls.race.value}
 					onChange={e => handleChange(e)} >
 						//TODO generate from BE according to administration
-						<option value="galerijni">&nbsp;  Běh 3,6 km Galerijní ulicí</option>
-						<option value="ctvrtmaraton">&nbsp;  1/4 maratón</option>
-						<option value="pulmaraton">&nbsp;  1/2 maratón</option>
-						<option value="maraton">&nbsp;  Maratón</option>
+						<MenuItem value="galerijni">&nbsp;  Běh 3,6 km Galerijní ulicí</MenuItem>
+						<MenuItem value="ctvrtmaraton">&nbsp;  1/4 maratón</MenuItem>
+						<MenuItem value="pulmaraton">&nbsp;  1/2 maratón</MenuItem>
+						<MenuItem value="maraton">&nbsp;  Maratón</MenuItem>
 				</TextField>
 			</fieldset>
 
