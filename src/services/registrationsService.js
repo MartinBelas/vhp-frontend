@@ -11,26 +11,20 @@ const requestOptions = {
     headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' }
 };
 
-function GetAllRegistrations() {
+async function GetAllRegistrations() {
 
-    return fetch(REST_API + '/registrations', requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return Promise.reject(response.statusText);
-            }
-            return response.json();
-        })
-        .catch(err => {
-            console.log('err: ', err.mesage);
-        });
-        //TODO rm
-        // .then(responseData => {
-        //     localStorage.setItem('news', JSON.stringify(responseData));
-        //     return responseData;
-        // });
+    try {
+        const response = await fetch(REST_API + '/registrations', requestOptions);
+        if (!response.ok) {
+            return Promise.reject(response.statusText);
+        }
+        return await response.json();
+    } catch (err) {
+        console.log('err: ', err.mesage);
+    }
 }
 
-function CreateRegistration(data) {
+async function CreateRegistration(data) {
 
     data = JSON.parse(data);
 
@@ -56,17 +50,16 @@ function CreateRegistration(data) {
         body: JSON.stringify(payload),
     };
 
-    fetch(REST_API + '/registrations', requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return Promise.reject(response.statusText);
-            }
-            return response.json();
-        })
-        .catch(err => {
-            console.log('Registration error: ', err);
-            return err;
-        })
+    try {
+        const response = await fetch(REST_API + '/registrations', requestOptions);
+        if (!response.ok) {
+            return Promise.reject(response.statusText);
+        }
+        return await response.json();
+    } catch (err) {
+        console.log('Registration err: ', err.mesage);
+        return err;
+    }
 }
 
 //TODO for adm only

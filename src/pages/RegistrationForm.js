@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppContext } from '../libs/contextLib';
+import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { TextField } from '@material-ui/core';
 import { registrationsService } from '../services/registrationsService';
@@ -7,8 +7,8 @@ import validate from '../services/validator.js'
 
 function ApplicationForm() {
 
-	const { REST_API } = useAppContext();
-		
+	let history = useHistory();
+
 	const [formIsValid, setFormIsValid] = useState(false);
 	const [formControls, setFormControls] = useState(
 		{
@@ -133,9 +133,8 @@ function ApplicationForm() {
 		payload = JSON.stringify(payload);
 
 		registrationsService.CreateRegistration(payload)
-			.then(data => {
-				// setRegisteredRunners(data);
-				// return data;
+			.then(() => {
+				history.push('/registrace')
 			})
 			.catch(err => {
 				console.log('Registration error: ', err.message);
