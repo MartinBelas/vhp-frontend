@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppContext } from '../libs/contextLib';
 import Button from "@material-ui/core/Button";
 import { TextField } from '@material-ui/core';
-
+import { registrationsService } from '../services/registrationsService';
 import validate from '../services/validator.js'
 
 function ApplicationForm() {
@@ -121,7 +121,7 @@ function ApplicationForm() {
 		let payload = new Map();
 		payload['email'] = formControls.email.value;
 		payload['firstname'] = formControls.firstname.value;
-		payload['lastname'] = (formControls.lastname.value);
+		payload['lastname'] = formControls.lastname.value;
 		payload['birth'] = formControls.birth.value;
 		payload['sex'] = formControls.sex.value;
 		payload['home'] = formControls.home.value;
@@ -131,26 +131,15 @@ function ApplicationForm() {
 		payload['notes'] = formControls.notes.value;
 
 		payload = JSON.stringify(payload);
-		console.dir(" --> PAYLOAD : ", payload); //TODO delete
 
-		const requestOptions = {
-			method: 'POST',
-			headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' },
-			body: payload
-		};
-		console.dir(" --> REST_API : ", REST_API + '/registrations'); //TODO delete
-
-		fetch(REST_API + '/registrations', requestOptions)
-			.then(response => {
-				console.dir(" --> response.ok : ", response.ok); //TODO delete
-				if (!response.ok) {
-					return Promise.reject(response.statusText);
-				}
-				return response.json();
+		registrationsService.CreateRegistration(payload)
+			.then(data => {
+				// setRegisteredRunners(data);
+				// return data;
 			})
 			.catch(err => {
-                console.log('Registration error: ', err);
-            })
+				console.log('Registration error: ', err.message);
+			})
 	}
 
 	return (

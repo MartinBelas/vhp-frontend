@@ -2,7 +2,8 @@ import config from '../config';
 const REST_API = config.restApi;
 
 export const registrationsService = {
-    GetAllRegistrations
+    GetAllRegistrations,
+    CreateRegistration
 };
 
 const requestOptions = {
@@ -18,12 +19,54 @@ function GetAllRegistrations() {
                 return Promise.reject(response.statusText);
             }
             return response.json();
+        })
+        .catch(err => {
+            console.log('err: ', err.mesage);
         });
         //TODO rm
         // .then(responseData => {
         //     localStorage.setItem('news', JSON.stringify(responseData));
         //     return responseData;
         // });
+}
+
+function CreateRegistration(data) {
+
+    data = JSON.parse(data);
+
+    const payload = {
+        "registration":
+        {
+            "firstname": data.firstname,
+            "lastname": data.lastname,
+            "email": data.email,
+            "phone": data.phone,
+            "sex": data.sex,
+            "birth": data.birth,
+            "home": data.home,
+            "club": data.club,
+            "race": data.race,
+            "notes": data.notes
+        }
+    }
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    };
+
+    fetch(REST_API + '/registrations', requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return Promise.reject(response.statusText);
+            }
+            return response.json();
+        })
+        .catch(err => {
+            console.log('Registration error: ', err);
+            return err;
+        })
 }
 
 //TODO for adm only
@@ -39,38 +82,7 @@ function GetAllRegistrations() {
 //             });
 // }
 
-// function createOneNews(title, content) {
-
-//     let user = userService.getCurrentUser();
-
-//     const payload = {
-//         "news":
-//         {
-//             "title": title,
-//             "content": content
-//         }
-//     }
-
-//     const requestOptions = {
-//         method: 'POST',
-//         headers: { 'api-key': process.env.REACT_APP_API_KEY, 'authorization': user.accessToken, 'Content-Type': 'application/json' },
-//         body: JSON.stringify(payload),
-//     };
-
-//     return fetch(REST_API + '/news', requestOptions)
-//         .then(response => {
-//             if (!response.ok) {
-//                 return Promise.reject(response.statusText);
-//             }
-//             return response.json();
-//         })
-//         .catch(err => {
-//             console.log('err: ', err);
-//             return err;
-//         });
-// }
-
-// function updateOneNews(id, title, content) {
+// function updateOneRegistration(id, title, content) {
     
 //     let user = userService.getCurrentUser();
 
@@ -106,7 +118,7 @@ function GetAllRegistrations() {
 //         });
 // } 
 
-// function deleteOneNews(id) {
+// function deleteOneRegistration(id) {
 
 //     let user = userService.getCurrentUser();
 

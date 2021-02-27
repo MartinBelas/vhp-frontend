@@ -28,9 +28,8 @@ export default function Registration() {
             <hr />
             <div>
                 <h3>Registrováni:</h3>
-                {registeredRunners.map(user =>
+                {registeredRunners !== undefined && registeredRunners.map(user =>
                     <div key={user.id}>{user.firstName} {user.lastName}, {user.birth}, {user.address}, {user.club}, {user.race} <hr /></div>
-                    
                 )}
             </div>
         </div>
