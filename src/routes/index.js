@@ -40,6 +40,7 @@ export default function Routes() {
             <Route exact path='/novinky' component={LatestNews} />
             <Route exact path='/novinky/:id' component={OneNews} />
             <Route exact path='/registrace' component={Registration} />
+            <Route exact path='/registrace/err' component={Registration} />
             <Route exact path='/registracni-formular' component={RegistrationForm} />
             <Route exact path='/vysledky' component={Results} />
             <Route exact path='/vysledky/vysledky2011' component={Results2011} />

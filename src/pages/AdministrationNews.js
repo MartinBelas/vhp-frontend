@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Link, 
-    useParams,  
+    useParams, 
     BrowserRouter as Router,
     Route,
     Switch } from 'react-router-dom';

@@ -135,10 +135,11 @@ function ApplicationForm() {
 
 		registrationsService.CreateRegistration(payload)
 			.then(() => {
-				history.push('/registrace')
+				history.push('/registrace');
 			})
 			.catch(err => {
-				console.log('Registration error: ', err.message);
+				console.log('Registration error: ', err);
+				history.push('/registrace/err');
 			})
 	}
 
