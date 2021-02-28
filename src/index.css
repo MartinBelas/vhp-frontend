@@ -135,6 +135,15 @@ A:HOVER
 	font-weight: bolder;
 }
 
+.err {
+	color: Red;
+	border: 2px solid Black;
+	padding: 10px;
+	margin: 10px;
+	float: center;
+	font-weight: bolder;
+}
+
 .clear {
 clear : both;
 height : 0;
