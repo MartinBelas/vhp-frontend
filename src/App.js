@@ -34,7 +34,7 @@ export default function App() {
                 }
             })
             .catch(err => {
-                console.log('app err: ', err.mesage);
+                console.log('app err: ', err.message);
             })
     }, []);
 
