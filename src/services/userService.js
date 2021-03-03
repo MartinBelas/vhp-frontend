@@ -7,7 +7,8 @@ Registration of new admin users via react frontend is not supported, it's possib
 export const userService = {
     login,
     logout,
-    getCurrentUser
+    getCurrentUser,
+    setNewpassword
 };
 
 function login(email, password) {
@@ -84,3 +85,33 @@ function getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));
 } 
 
+function setNewpassword(email, password) {
+
+    const payload = {
+        "newpassword":
+        {
+            "email": email,
+            "password": password
+        }
+    }
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    };
+
+    return fetch('/api/auth/newpassword', requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return Promise.reject(response.statusText);
+            }
+
+            return response.json();
+        })
+        .catch( e => {
+            const msg = "Can't accept new password request.";
+            console.log("Service: ", msg);
+            return Promise.reject(msg);
+        });
+}

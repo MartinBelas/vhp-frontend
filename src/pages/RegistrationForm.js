@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import { TextField } from '@material-ui/core';
-import MenuItem from '@material-ui/core/MenuItem';
+import { TextField, Button, MenuItem } from '@material-ui/core';
 import { registrationsService } from '../services/registrationsService';
 import validate from '../services/validator.js'
 

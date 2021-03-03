@@ -65,7 +65,13 @@ export default function Login() {
                 <div className="form-group">
                     <button type="submit">Přihlásit</button>
                     <br/><br/>
-                    {/* <a href="#">Zapomenuté heslo?</a> //TODO */}
+                </div>
+
+                <hr/>
+                <br/>
+                <div className="form-group">
+                    { <a href="/login/nove-heslo">Vytvořit nové heslo</a> }
+                    <br/><br/>
                 </div>
             </form>
         </div>
