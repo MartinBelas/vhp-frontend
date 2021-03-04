@@ -8,7 +8,8 @@ export const userService = {
     login,
     logout,
     getCurrentUser,
-    setNewpassword
+    newPasswordRequest,
+    newPasswordConfirmation
 };
 
 function login(email, password) {
@@ -76,7 +77,7 @@ function logout() {
 
             return response;
         }).catch(err => {
-            //console.log('LOGOUT err: ', err)
+            console.log('LOGOUT err: ', err)
         });
 }
 
@@ -85,11 +86,12 @@ function getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));
 } 
 
-function setNewpassword(email, password) {
+function newPasswordRequest(email, password) {
 
     const payload = {
         "newpassword":
         {
+            "competition": COMPETITION,
             "email": email,
             "password": password
         }
@@ -111,6 +113,28 @@ function setNewpassword(email, password) {
         })
         .catch( e => {
             const msg = "Can't accept new password request.";
+            console.log("Service: ", msg);
+            return Promise.reject(msg);
+        });
+}
+
+function newPasswordConfirmation(confirmationHash) {
+
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' }
+    };
+
+    return fetch('/api/auth/newpassword/' + confirmationHash, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return Promise.reject(response.statusText);
+            }
+
+            return response.json();
+        })
+        .catch( e => {
+            const msg = "Confirmation failed.";
             console.log("Service: ", msg);
             return Promise.reject(msg);
         });

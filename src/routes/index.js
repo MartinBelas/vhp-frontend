@@ -3,6 +3,7 @@ import { Switch } from "react-router-dom";
 import Route from "./Route";
 
 import Login from "../pages/Login";
+import { NewPasswordRequest, NewPasswordConfirmation } from "../pages/NewPassword";
 import { LatestNews, OneNews } from '../pages/Home';
 import Registration from '../pages/Registration';
 import RegistrationForm from '../pages/RegistrationForm';
@@ -31,6 +32,8 @@ export default function Routes() {
     
         <Switch>
             <Route exact path="/login" component={Login} />
+            <Route exact path="/login/nove-heslo" component={NewPasswordRequest} />
+            <Route exact path="/nove-heslo/:hash" component={NewPasswordConfirmation} />
             <Route exact path="/adm" component={Administration} />
             <Route exact path="/adm/novy-rocnik" component={AdministrationNextYear} />
             <Route exact path="/adm/novinky" component={AdministrationNews} />
