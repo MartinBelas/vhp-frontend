@@ -4,29 +4,20 @@ import Countdown from 'react-countdown';
 import { useAppContext } from '../libs/contextLib';
 import { newsService } from '../services/newsService';
 
-export const Home = {
-    OneNews,
-    LatestNews
-};
-
-export default function HomeRouter() {
-    return (
-        <div id="content">
-            <Switch>
-                <Route exact path="/" component={LatestNews} />
-                <Route exact path="/novinky" component={LatestNews} />
-                <Route exact path="/novinky/:id" component={OneNews} />
-            </Switch>
-        </div>
-    );
+export {
+    LatestNews,
+    OneNews
 }
 
 function LatestNews() {
     
-    const [newsItems, setNewsItems] = useState();
-    const { startDate, nextYearReady } = useAppContext();
     const PREVIEW_LENGHT = 200;
     const LATEST_NEWS_COUNT = 2;
+    
+    const { startDate, nextYearReady } = useAppContext();
+    
+    const [newsItems, setNewsItems] = useState();
+    const [message, setMessage] = useState();
 
     let count = LATEST_NEWS_COUNT;
     if (window.location.pathname === "/novinky" || window.location.pathname === "/novinky/") {
@@ -41,11 +32,12 @@ function LatestNews() {
             })
             .catch(err => {
                 console.log('LatestNews err: ', err);
+                setMessage(err);
             })
     },[count])
 
     return (
-    <div>
+    <div id="content">
         <h2>Novinky</h2>
         {nextYearReady ? <div className="news-item">
                             Do startu VH půlmaratonu zbývá
@@ -55,6 +47,8 @@ function LatestNews() {
                             /> dnů.
                         </div> 
                         : <br/>}
+
+        {message ? <p className="err">Chyba: Nepovedlo se načíst novinky z databáze.</p> : ""}
 
         {newsItems ? newsItems.map((item) => {
             const timestamp = new Date(item.date);
