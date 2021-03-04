@@ -11,6 +11,7 @@ export default function Registration() {
     } 
 
     const [registeredRunners, setRegisteredRunners] = useState([]);
+    const [message, setMessage] = useState();
 
     useEffect(() => {
         registrationsService.GetAllRegistrations()
@@ -20,6 +21,11 @@ export default function Registration() {
         })
         .catch(err => {
             console.log('Registrations error: ', err);
+            if (err.errMessage) {
+                setMessage(err.errMessage);
+            } else {
+                setMessage('Registrace se nepovedla, došlo k nějaké chybe');
+            }
         })
     },[])
 
@@ -28,7 +34,7 @@ export default function Registration() {
             <h2>REGISTRACE</h2>
 
             {err ? <div className='err'>
-                        Registrace se nepovedla, došlo k nějaké chybe na straně serveru. 
+                        {message}
                         <br/>
                     </div>
                     : <br/>}

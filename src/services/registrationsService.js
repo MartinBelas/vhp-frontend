@@ -3,7 +3,8 @@ const REST_API = config.restApi;
 
 export const registrationsService = {
     GetAllRegistrations,
-    CreateRegistration
+    CreateRegistration,
+    GetRaces
 };
 
 const requestOptions = {
@@ -24,7 +25,7 @@ async function GetAllRegistrations() {
     }
 }
 
-async function CreateRegistration(data) {
+function CreateRegistration(data) {
 
     data = JSON.parse(data);
 
@@ -50,17 +51,30 @@ async function CreateRegistration(data) {
         body: JSON.stringify(payload),
     };
 
+    return fetch(REST_API + '/registrations', requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return Promise.reject(response);
+            }
+
+            return response.json();
+        });
+}
+
+async function GetRaces() {
+    
     try {
-        const response = await fetch(REST_API + '/registrations', requestOptions);
+        const response = await fetch(REST_API + '/races', requestOptions);
         if (!response.ok) {
             return Promise.reject(response.statusText);
         }
         return await response.json();
     } catch (err) {
-        console.log('Create Registration err: ', err.mesage);
-        return err;
+        console.log('Get Races err: ', err);
     }
 }
+
+
 
 //TODO for adm only
 // function GetOneRegistrationsItem(id) {

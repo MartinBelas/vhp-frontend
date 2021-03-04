@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from 'react-router-dom';
 import { TextField, Button } from '@material-ui/core';
-import { useHistory } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { userService } from '../services/userService';
 import validate from '../services/validator.js'
@@ -78,7 +77,6 @@ function NewPasswordRequest() {
                             setMessage("Žádost o změnu hesla odeslána, ještě je třeba ji povtrdit v emailu.");
                             setSentOk(true);
                             <p><Link to={"/"}><b>Hlavní stánka</b></Link></p>
-                            //history.push('/');
                         } else {
                             setMessage("Žádost o změnu hesla selhala.");
                         }

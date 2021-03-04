@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import { TextField, Button, MenuItem } from '@material-ui/core';
+import ReCAPTCHA from "react-google-recaptcha";
 import { registrationsService } from '../services/registrationsService';
 import validate from '../services/validator.js'
 
 function ApplicationForm() {
 
-	let history = useHistory();
+	//let history = useHistory(); //TODO rm
 
+	const [recaptchaIsOk, setRecaptchaIsOk] = useState(false);
 	const [formIsValid, setFormIsValid] = useState(false);
+	const [races, setRaces] = useState();
+	const [message, setMessage] = useState();
+
+	useEffect(() => {
+		registrationsService.GetRaces()
+			.then(data => {
+				setRaces(data);
+				//return data;
+			})
+			.catch(err => {
+				console.log('GetRces err: ', err);
+				//setMessage(err);
+			})
+		},[])
+
 	const [formControls, setFormControls] = useState(
 		{
 			email: {
@@ -114,6 +131,12 @@ function ApplicationForm() {
 		setFormIsValid(formIsValid);
 	}
 
+	function recaptchaOnChange(value) {
+		const recaptchaVal = (value !== null)
+		setRecaptchaIsOk(recaptchaVal) 
+		setFormIsValid(formIsValid && recaptchaVal);
+    }
+
 	function handleSubmit(event) {
 		event.preventDefault();
 		
@@ -132,113 +155,135 @@ function ApplicationForm() {
 		payload = JSON.stringify(payload);
 
 		registrationsService.CreateRegistration(payload)
-			.then(() => {
-				history.push('/registrace');
-			})
-			.catch(err => {
-				console.log('Registration error: ', err);
-				history.push('/registrace/err');
-			})
+			.then(
+				resp => {
+					if (resp.isOk) {
+						setMessage('Registrace proběhla v pořádku. Detaily byly poslány emailem.');
+					} else {
+						setMessage("Registrace se nepovedla. " + resp.errMessage);
+					}
+				},
+				err => {
+					if (err.status == 409) {
+						setMessage('Tato registrace se nepovedla. Email už v registracích existuje.');
+					} else {
+						setMessage('Registrace se nepovedla.');
+					}
+				}
+			);
 	}
 
 	return (
 		<form onSubmit={e => {handleSubmit(e)}}>
 
-			<fieldset>
-				<legend>Identifikace závodníka</legend>
-				<TextField name="firstname" label="Jméno" variant="outlined" margin="dense"
-					required
-					value={formControls.firstname.value}
-					onChange={e => handleChange(e)}
-					error={!formControls.firstname.valid}
-				/>
-			&nbsp;
-			<TextField name="lastname" label="Příjmení" variant="outlined" margin="dense"
-					required
-					value={formControls.lastname.value}
-					onChange={e => handleChange(e)}
-					error={!formControls.lastname.valid}
-				/>
-
-			<br />
-			<TextField name="email" label="E-mail" variant="outlined" margin="dense"
-				type="email" required
-				value={formControls.email.value}
-				onChange={e => handleChange(e)}
-				error={!formControls.email.valid}
-			/>
-			&nbsp;
-			<TextField id="phone" label="Telefon" variant="outlined" margin="dense"
-					name="phone"
-					value={formControls.phone.value}
-					onChange={e => handleChange(e)}
-				/>
-
-			<br />
-			<TextField name="sex" label="Pohlaví" variant="outlined" margin="dense"
-				select required style={{ minWidth: 120 }}
-				options={formControls.sex.options}
-				value={formControls.sex.value}
-				onChange={e => handleChange(e)}
-				error={!formControls.sex.valid} >
-					<MenuItem value="M">&nbsp; Muž </MenuItem>
-					<MenuItem value="F">&nbsp; Žena </MenuItem>
-			</TextField>
-			&nbsp;  &nbsp;
-			<TextField name="birth" label="Rok naroz." variant="outlined" margin="dense"
-					type="number" required
-					value={formControls.birth.value}
-					onChange={e => handleChange(e)}
-					error={!formControls.birth.valid}
-				/>
+			{message ? <div className="err">{message}</div> : 
+			<div>
+				<fieldset>
+					<legend>Identifikace závodníka</legend>
+					<TextField name="firstname" label="Jméno" variant="outlined" margin="dense"
+						required
+						value={formControls.firstname.value}
+						onChange={e => handleChange(e)}
+						error={!formControls.firstname.valid}
+					/>
+				&nbsp;
+				<TextField name="lastname" label="Příjmení" variant="outlined" margin="dense"
+						required
+						value={formControls.lastname.value}
+						onChange={e => handleChange(e)}
+						error={!formControls.lastname.valid}
+					/>
 
 				<br />
-				<TextField name="home" label="Město/obec" variant="outlined" margin="dense"
-					required
-					value={formControls.home.value}
+				<TextField name="email" label="E-mail" variant="outlined" margin="dense"
+					type="email" required
+					value={formControls.email.value}
 					onChange={e => handleChange(e)}
-					error={!formControls.home.valid}
+					error={!formControls.email.valid}
 				/>
-			&nbsp;
-			<TextField name="club" label="Klub" variant="outlined" margin="dense"
-					value={formControls.club.value}
-					onChange={e => handleChange(e)} />
+				&nbsp;
+				<TextField id="phone" label="Telefon" variant="outlined" margin="dense"
+						name="phone"
+						value={formControls.phone.value}
+						onChange={e => handleChange(e)}
+					/>
 
-			</fieldset>
-
-			<br />
-			<fieldset>
-				<legend>Závod</legend>
-				<TextField name="race" label="Závod" variant="outlined" margin="dense" 
-					select required style={{ minWidth: 250 }}
-					value={formControls.race.value}
-					onChange={e => handleChange(e)} >
-						//TODO generate from BE according to administration
-						<MenuItem value="galerijni">&nbsp;  Běh 3,6 km Galerijní ulicí</MenuItem>
-						<MenuItem value="ctvrtmaraton">&nbsp;  1/4 maratón</MenuItem>
-						<MenuItem value="pulmaraton">&nbsp;  1/2 maratón</MenuItem>
-						<MenuItem value="maraton">&nbsp;  Maratón</MenuItem>
+				<br />
+				<TextField name="sex" label="Pohlaví" variant="outlined" margin="dense"
+					select required style={{ minWidth: 120 }}
+					options={formControls.sex.options}
+					value={formControls.sex.value}
+					onChange={e => handleChange(e)}
+					error={!formControls.sex.valid} >
+						<MenuItem value="M">&nbsp; Muž </MenuItem>
+						<MenuItem value="F">&nbsp; Žena </MenuItem>
 				</TextField>
-			</fieldset>
+				&nbsp;  &nbsp;
+				<TextField name="birth" label="Rok naroz." variant="outlined" margin="dense"
+						type="number" required
+						value={formControls.birth.value}
+						onChange={e => handleChange(e)}
+						error={!formControls.birth.valid}
+					/>
 
-			<br />
-			<fieldset>
-				<legend>Poznámky </legend>
-				<TextField name="notes" label="Poznámky" variant="outlined" margin="dense" multiline
-					value={formControls.notes.value}
-					onChange={e => handleChange(e)} />
-			</fieldset>
+					<br />
+					<TextField name="home" label="Město/obec" variant="outlined" margin="dense"
+						required
+						value={formControls.home.value}
+						onChange={e => handleChange(e)}
+						error={!formControls.home.valid}
+					/>
+				&nbsp;
+				<TextField name="club" label="Klub" variant="outlined" margin="dense"
+						value={formControls.club.value}
+						onChange={e => handleChange(e)} />
 
-			<br />
-			<hr />
-			<br />
+				</fieldset>
 
-			<div style={{ textAlign: 'center' }}>
-				<Button variant="contained" color="primary" type="submit" disabled={!formIsValid}>
-					Odeslat
-				</Button>
+				<br />
+				<fieldset>
+					<legend>Závod</legend>
+					<TextField name="race" label="Závod" variant="outlined" margin="dense" 
+						select required style={{ minWidth: 250 }}
+						value={formControls.race.value}
+						onChange={e => handleChange(e)}
+						error={!formControls.race.valid} >
+							//TODO generate from BE according to administration - races.forEach( r => {}); 
+							<MenuItem value="galerijni">&nbsp;  Běh 3,6 km Galerijní ulicí</MenuItem>
+							<MenuItem value="ctvrtmaraton">&nbsp;  1/4 maratón</MenuItem>
+							<MenuItem value="pulmaraton">&nbsp;  1/2 maratón</MenuItem>
+							<MenuItem value="maraton">&nbsp;  Maratón</MenuItem>
+					</TextField>
+				</fieldset>
+
+				<br />
+				<fieldset>
+					<legend>Poznámky </legend>
+					<TextField name="notes" label="Poznámky" variant="outlined" margin="dense" multiline
+						style={{display: 'flex'}}
+						value={formControls.notes.value}
+						onChange={e => handleChange(e)} />
+				</fieldset>
+
+				<br />
+				<hr />
+				<br />
+
+				<ReCAPTCHA
+					style={{ textAlign: 'center', padding: '20px'}}
+					sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
+					onChange={recaptchaOnChange} />
+
+				<br />
+
+				<div style={{ textAlign:'center'}}>
+					<Button variant="contained" color="primary" type="submit" disabled={!formIsValid || !recaptchaIsOk}>
+						Odeslat
+					</Button>
+				</div>
+				<br />
 			</div>
-
+			}
 		</form>
 	);
 }
@@ -247,7 +292,7 @@ function RegistrationForm() {
 	return (
 		<div id="content">
 			<h2>REGISTRACE / PŘIHLÁŠKA</h2>
-			<p><a href="/registrace">← zpět na registrace</a></p>
+			<p><Link to={"/registrace"}>← zpět na registrace</Link></p>
 
 			<ApplicationForm />
 		</div>
