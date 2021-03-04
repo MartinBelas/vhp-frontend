@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, Route, Switch, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Countdown from 'react-countdown';
 import { useAppContext } from '../libs/contextLib';
 import { newsService } from '../services/newsService';
@@ -12,7 +12,7 @@ export {
 function LatestNews() {
     
     const PREVIEW_LENGHT = 200;
-    const LATEST_NEWS_COUNT = 2;
+    const LATEST_NEWS_COUNT = 10;
     
     const { startDate, nextYearReady } = useAppContext();
     
