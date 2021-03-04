@@ -16,6 +16,7 @@ function NewPasswordRequest() {
     const [recaptchaIsOk, setRecaptchaIsOk] = useState(false);
 	const [formIsValid, setFormIsValid] = useState(false);
     const [message, setMessage] = useState();
+    const [sentOk, setSentOk] = useState(false);
 	const [formControls, setFormControls] = useState(
 		{
 			email: {
@@ -75,6 +76,7 @@ function NewPasswordRequest() {
                     resp => {
                         if (resp.isOk) {
                             setMessage("Žádost o změnu hesla odeslána, ještě je třeba ji povtrdit v emailu.");
+                            setSentOk(true);
                             <p><Link to={"/"}><b>Hlavní stánka</b></Link></p>
                             //history.push('/');
                         } else {
@@ -123,39 +125,41 @@ function NewPasswordRequest() {
 
                 {message ? <div className="err">{message}</div> : ""}
 
-                <fieldset>
-                <legend>Nové heslo</legend>
-                    <TextField name="email" label="E-mail" variant="filled" margin="dense"
-                        type="email" required style={{display: 'flex', marginTop: '20px'}}
-                        value={formControls.email.value}
-                        onChange={e => handleChange(e)}
-                        error={!formControls.email.valid}
-                    />
-                    <br /><hr />
-                    <TextField name="newpassword1" label="Nové heslo" variant="filled" margin="dense"
-                        type="password" required style={{display: 'flex', whiteSpace: "nowrap", marginTop: '30px'}}
-                        value={formControls.newpassword1.value}
-                        onChange={e => handleChange(e)}
-                        error={!formControls.newpassword1.valid}
-                    />
-                    <TextField name="newpassword2" label="Potvrzení nového hesla" variant="filled" margin="dense"
-                        type="password" required style={{display: 'flex', whiteSpace: "nowrap", marginTop: '30px'}}
-                        value={formControls.newpassword2.value}
-                        onChange={e => handleChange(e)}
-                        error={!formControls.newpassword2.valid}
-                    />
-                    <br /><hr />
-                    <ReCAPTCHA
-                        style={{ textAlign: 'center', padding: '20px'}}
-                        sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
-                        onChange={recaptchaOnChange} />
-                        
-                    <div style={{ textAlign: 'center', padding: '20px'}}>
-                        <Button variant="contained" color="primary" type="submit" disabled={!formIsValid}>
-                            Odeslat
-                        </Button>
-                    </div>
-                </fieldset>
+                {sentOk ? "" : 
+                    <fieldset>
+                    <legend>Nové heslo</legend>
+                        <TextField name="email" label="E-mail" variant="filled" margin="dense"
+                            type="email" required style={{display: 'flex', marginTop: '20px'}}
+                            value={formControls.email.value}
+                            onChange={e => handleChange(e)}
+                            error={!formControls.email.valid}
+                        />
+                        <br /><hr />
+                        <TextField name="newpassword1" label="Nové heslo" variant="filled" margin="dense"
+                            type="password" required style={{display: 'flex', whiteSpace: "nowrap", marginTop: '30px'}}
+                            value={formControls.newpassword1.value}
+                            onChange={e => handleChange(e)}
+                            error={!formControls.newpassword1.valid}
+                        />
+                        <TextField name="newpassword2" label="Potvrzení nového hesla" variant="filled" margin="dense"
+                            type="password" required style={{display: 'flex', whiteSpace: "nowrap", marginTop: '30px'}}
+                            value={formControls.newpassword2.value}
+                            onChange={e => handleChange(e)}
+                            error={!formControls.newpassword2.valid}
+                        />
+                        <br /><hr />
+                        <ReCAPTCHA
+                            style={{ textAlign: 'center', padding: '20px'}}
+                            sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
+                            onChange={recaptchaOnChange} />
+                            
+                        <div style={{ textAlign: 'center', padding: '20px'}}>
+                            <Button variant="contained" color="primary" type="submit" disabled={!formIsValid}>
+                                Odeslat
+                            </Button>
+                        </div>
+                    </fieldset>
+                }
             </form>
         </div>
     );
