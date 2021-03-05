@@ -7,22 +7,24 @@ import validate from '../services/validator.js'
 
 function ApplicationForm() {
 
-	//let history = useHistory(); //TODO rm
-
 	const [recaptchaIsOk, setRecaptchaIsOk] = useState(false);
 	const [formIsValid, setFormIsValid] = useState(false);
-	const [races, setRaces] = useState();
+	const [races, setRaces] = useState([]);
 	const [message, setMessage] = useState();
-
+	
 	useEffect(() => {
 		registrationsService.GetRaces()
-			.then(data => {
-				setRaces(data);
-				//return data;
+			.then(response => {
+
+				let racesOptions = [];
+				response.forEach( r => {
+					racesOptions.push(r);
+				});
+
+				setRaces(racesOptions);
 			})
 			.catch(err => {
-				console.log('GetRces err: ', err);
-				//setMessage(err);
+				console.log('GetRaces err: No races provided.', err);
 			})
 		},[])
 
@@ -93,12 +95,7 @@ function ApplicationForm() {
 				validationRules: {
 					isRequired: true,
 				},
-				options: [ //TODO generate from BE according to administration
-					{ value: 'galerijni', displayValue: 'Běh 3,6 km Galerijní ulicí' },
-					{ value: 'ctvrtmaraton', displayValue: '1/4 maratón' },
-					{ value: 'pulmaraton', displayValue: '1/2 maratón' },
-					{ value: 'maraton', displayValue: 'Maratón' }
-				]
+				options: races,
 			},
 			notes: {
 				value: '',
@@ -108,6 +105,7 @@ function ApplicationForm() {
 	);
 
 	function handleChange(event) {
+
 		const name = event.target.name;
 		const value = event.target.value;
 
@@ -133,13 +131,13 @@ function ApplicationForm() {
 
 	function recaptchaOnChange(value) {
 		const recaptchaVal = (value !== null)
-		setRecaptchaIsOk(recaptchaVal) 
+		setRecaptchaIsOk(recaptchaVal)
 		setFormIsValid(formIsValid && recaptchaVal);
     }
 
 	function handleSubmit(event) {
 		event.preventDefault();
-		
+
 		let payload = new Map();
 		payload['email'] = formControls.email.value;
 		payload['firstname'] = formControls.firstname.value;
@@ -164,7 +162,7 @@ function ApplicationForm() {
 					}
 				},
 				err => {
-					if (err.status == 409) {
+					if (err.status === 409) {
 						setMessage('Tato registrace se nepovedla. Email už v registracích existuje.');
 					} else {
 						setMessage('Registrace se nepovedla.');
@@ -176,7 +174,7 @@ function ApplicationForm() {
 	return (
 		<form onSubmit={e => {handleSubmit(e)}}>
 
-			{message ? <div className="err">{message}</div> : 
+			{message ? <div className="err">{message}</div> :
 			<div>
 				<fieldset>
 					<legend>Identifikace závodníka</legend>
@@ -240,19 +238,18 @@ function ApplicationForm() {
 
 				</fieldset>
 
+
 				<br />
 				<fieldset>
 					<legend>Závod</legend>
-					<TextField name="race" label="Závod" variant="outlined" margin="dense" 
+					<TextField name="race" label="Závod" variant="outlined" margin="dense"
 						select required style={{ minWidth: 250 }}
 						value={formControls.race.value}
 						onChange={e => handleChange(e)}
 						error={!formControls.race.valid} >
-							//TODO generate from BE according to administration - races.forEach( r => {}); 
-							<MenuItem value="galerijni">&nbsp;  Běh 3,6 km Galerijní ulicí</MenuItem>
-							<MenuItem value="ctvrtmaraton">&nbsp;  1/4 maratón</MenuItem>
-							<MenuItem value="pulmaraton">&nbsp;  1/2 maratón</MenuItem>
-							<MenuItem value="maraton">&nbsp;  Maratón</MenuItem>
+							{races.map(r => {
+								return <MenuItem key={r.id} value={r.description}>&nbsp; {r.description}</MenuItem>
+							})}
 					</TextField>
 				</fieldset>
 

@@ -61,17 +61,15 @@ function CreateRegistration(data) {
         });
 }
 
-async function GetRaces() {
-    
-    try {
-        const response = await fetch(REST_API + '/races', requestOptions);
-        if (!response.ok) {
-            return Promise.reject(response.statusText);
-        }
-        return await response.json();
-    } catch (err) {
-        console.log('Get Races err: ', err);
-    }
+function GetRaces() {
+
+    return fetch(REST_API + '/years/next/races', requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return Promise.reject(response.statusText);
+            }
+            return response.json();
+        })
 }
 
 
