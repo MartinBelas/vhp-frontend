@@ -188,7 +188,7 @@ function NewPasswordConfirmation() {
                 setMessage("Potvrzení změny hesla selhalo.");
             }
         );
-    },[])
+    },[hash])
         
     
     function handleSubmit(event) {

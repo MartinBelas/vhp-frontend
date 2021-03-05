@@ -9,6 +9,7 @@ export default function Login() {
 
     const { userHasAuthenticated } = useAppContext();
 
+    const [message, setMessage] = useState();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -26,6 +27,7 @@ export default function Login() {
                     resp => {
                         if (resp.isOk) {
                             userHasAuthenticated(true);
+                            setMessage("");
                             history.push('/adm')
                         } else {
                             //console.log('LOGIN failed: ', resp);
@@ -33,6 +35,8 @@ export default function Login() {
                     },
                     error => {
                         userHasAuthenticated(false);
+                        setMessage("Přihlášení se nepovedlo. Asi neplatné údaje, sorry jako...");
+
                         //console.log('LOGIN failed: ', error);
                     }
                 );
@@ -44,6 +48,8 @@ export default function Login() {
         <div className="Login">
             <form onSubmit={handleSubmit}>
                 <h3>Admin Log In</h3>
+
+                {message ? <div className="err">{message}</div> : ""}
 
                 <div className="form-group">
                     <label>Email: </label>

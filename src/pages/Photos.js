@@ -53,7 +53,7 @@ class Photos extends Component {
             <a href="http://kucharova.rajce.idnes.cz/Jistebnicky_pulmaraton_%2C_8.6.2013/" target="_blank" rel="noopener noreferrer">Jistebnický VH půlmaraton 2013</a>
             </p>
 
-            <script type="text/javascript" src="http://vh-pulmaraton.rajce.idnes.cz/?insert=js" charset="utf-8"></script>
+            <script type="text/javascript" src="http://vh-pulmaraton.rajce.idnes.cz/?insert=js" charSet="utf-8"></script>
         </div>
     );
   }
