@@ -16,7 +16,8 @@ export default function AdministrationNextYear() {
     const [categories, setCategories] = useState([]);
     const [newCategoryId, setNewCategoryId] = useState('');
     const [newCategoryDescription, setNewCategoryDescription] = useState('');
-
+    const [message, setMessage] = useState('');
+    
     useEffect(() => {
         axios.get(REST_API + '/years/last', options)
             .then(response => {
@@ -90,11 +91,11 @@ export default function AdministrationNextYear() {
 
         axios.post(REST_API + '/years', payload, options)
             .then(response => {
-                //TODO
+                setMessage("Registrace pro příští ročník byly spuštěny.");
             })
             .catch(err => {
-                console.log('ERROR: ', err);
-                // setError(err.message);
+                console.log('ERR Next year registrations: ', err);
+                setMessage("Chyba. Spuštění registrace se nepovedlo. ");
             })
     }
 
@@ -102,64 +103,69 @@ export default function AdministrationNextYear() {
         <div id="adm-content">
             {isAuthenticated ?
                 <div>
-                    <h2>ADMINISTRACE - Další ročník</h2>
+                    {message ? <div className="err">{message}</div>
+                    : 
                     <div>
-                        <strong>Datum posledního závodu:</strong> {lastDate}
-                    </div>
-                    <hr />
-                    <div>
-                        <strong>Datum příšího závodu:</strong> {nextDate}
-                        <Calendar
-                            onChange={onDateChange}
-                            value={new Date(nextDate)}
-                        />
-                    </div>
-                    <hr />
-                    <div>
-                        <strong>Kategorie:</strong>
-                        <br />
-                        Kategorie musí být ve fromátu Mxxx nebo Fxxx, kde M nebo F znamená pohlaví (M pro muži, F pro ženy) 
-                        a xxx je číslo a znamená věk, musí být na 3 znaky. Např. M018 znamená muži do 18 let a F350 znamená řeny do 350 let.
-                        <br />
-                        <ul>
-                            <li>KATEGORIE - POPIS</li>
-                            {categories.map((item) => (
-                                <li key={item.id}>
-                                    <span>{item.id}</span> - <span>{item.description}</span>  
-                                    &nbsp; <button type="button" onClick={() => handleRemoveCategory(item.id)}>Odstranit</button>
-                                </li>
-                            ))}
-                        </ul>
-                        Nová kategorie <input type="text" size="4" value={newCategoryId} onChange={handleCategoryIdChange} /> &nbsp;
-                        popis <input type="text" value={newCategoryDescription} onChange={handleCategoryDescriptionChange} /> &nbsp;
-                        <button type="button" onClick={handleAddCategory}>
-                            Přidej kategorii
+                        <h2>ADMINISTRACE - Další ročník</h2>
+                        <div>
+                            <strong>Datum posledního závodu:</strong> {lastDate}
+                        </div>
+                        <hr />
+                        <div>
+                            <strong>Datum příšího závodu:</strong> {nextDate}
+                            <Calendar
+                                onChange={onDateChange}
+                                value={new Date(nextDate)}
+                            />
+                        </div>
+                        <hr />
+                        <div>
+                            <strong>Kategorie:</strong>
+                            <br />
+                            Kategorie musí být ve fromátu Mxxx nebo Fxxx, kde M nebo F znamená pohlaví (M pro muži, F pro ženy) 
+                            a xxx je číslo a znamená věk, musí být na 3 znaky. Např. M018 znamená muži do 18 let a F350 znamená řeny do 350 let.
+                            <br />
+                            <ul>
+                                <li>KATEGORIE - POPIS</li>
+                                {categories.map((item) => (
+                                    <li key={item.id}>
+                                        <span>{item.id}</span> - <span>{item.description}</span>  
+                                        &nbsp; <button type="button" onClick={() => handleRemoveCategory(item.id)}>Odstranit</button>
+                                    </li>
+                                ))}
+                            </ul>
+                            Nová kategorie <input type="text" size="4" value={newCategoryId} onChange={handleCategoryIdChange} /> &nbsp;
+                            popis <input type="text" value={newCategoryDescription} onChange={handleCategoryDescriptionChange} /> &nbsp;
+                            <button type="button" onClick={handleAddCategory}>
+                                Přidej kategorii
+                            </button>
+                        </div>
+                        <hr />
+                        <div>
+                            <strong>Závody:</strong>
+                            <br />
+                            Půlmaratón, maratón, atd.
+                            <br />
+                            <ul>
+                                <li>ZÁVOD</li>
+                                {races.map((item) => (
+                                    <li key={item.id}>
+                                        <span>{item.id}</span> - <span>{item.description}</span>  
+                                        &nbsp; <button type="button" onClick={() => handleRemoveRace(item.id)}>Odstranit</button>
+                                    </li>
+                                ))}
+                            </ul>
+                            Nový závod, název <input type="text" value={newRaceDescription} onChange={handleRaceDescriptionChange} /> &nbsp;
+                            <button type="button" onClick={handleAddRace}>
+                                Přidej závod
+                            </button>
+                        </div>
+                        <hr />
+                        <button type="button" onClick={handleStartRegistrations}>
+                            SPUSTIT REGISTRACE
                         </button>
                     </div>
-                    <hr />
-                    <div>
-                        <strong>Závody:</strong>
-                        <br />
-                        Půlmaratón, maratón, atd.
-                        <br />
-                        <ul>
-                            <li>ZÁVOD</li>
-                            {races.map((item) => (
-                                <li key={item.id}>
-                                    <span>{item.id}</span> - <span>{item.description}</span>  
-                                    &nbsp; <button type="button" onClick={() => handleRemoveRace(item.id)}>Odstranit</button>
-                                </li>
-                            ))}
-                        </ul>
-                        Nový závod, název <input type="text" value={newRaceDescription} onChange={handleRaceDescriptionChange} /> &nbsp;
-                        <button type="button" onClick={handleAddRace}>
-                            Přidej závod
-                        </button>
-                    </div>
-                    <hr />
-                    <button type="button" onClick={handleStartRegistrations}>
-                        SPUSTIT REGISTRACE
-                    </button>
+                    }
                 </div>
                 : ""
             }

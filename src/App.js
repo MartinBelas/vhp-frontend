@@ -26,11 +26,13 @@ export default function App() {
     useEffect(() => {
         axios.get(REST_API + '/years/next', options)
             .then(response => {
-                const nextDate = new Date(response.data.date).toLocaleDateString();
-                setStartDate(nextDate);
-                setEventCounter(response.data.counter);
-                if (new Date(response.data.date) > new Date()) {
-                    setNextYearReady(true);
+                if (response.data.isOk) {
+                    const nextDate = new Date(response.data.data.date).toLocaleDateString();
+                    setStartDate(nextDate);
+                    setEventCounter(response.data.data.counter);
+                    if (new Date(response.data.data.date) > new Date()) {
+                        setNextYearReady(true);
+                    }
                 }
             })
             .catch(err => {
