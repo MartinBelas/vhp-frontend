@@ -58,6 +58,10 @@ function CreateRegistration(data) {
             }
 
             return response.json();
+        })
+        .catch( err => {
+            console.log('ERR Registration service, create new: ', err);
+            return Promise.reject(err);
         });
 }
 
