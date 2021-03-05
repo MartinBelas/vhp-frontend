@@ -42,7 +42,15 @@ export default function App() {
 
     return (
         <div>
-            <AppContext.Provider value={{ REST_API, options, isAuthenticated, userHasAuthenticated, startDate, latestNewsItems, setLatestNewsItems }}>
+            <AppContext.Provider value={{ 
+                            REST_API, 
+                            options, 
+                            isAuthenticated, 
+                            userHasAuthenticated, 
+                            startDate, 
+                            latestNewsItems, 
+                            setLatestNewsItems, 
+                            nextYearReady }}>
                 <Router history={history}>
                     <HeaderComponent />
                     {nextYearReady ? <center><h2>{eventCounter}. ročník jistebnického VH půlmaratónu se bude konat {startDate}</h2></center> : <br/>}
