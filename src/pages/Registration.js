@@ -6,8 +6,7 @@ import { AppContext } from "../libs/contextLib";
 export default function Registration() {
 
     const nextYearReady = useContext(AppContext).nextYearReady;
-    console.log(' : ', nextYearReady) 
-
+    
     let err = false;
     // if (window.location.pathname === "/registrace/err") {
     //     err = true;

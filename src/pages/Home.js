@@ -79,28 +79,32 @@ function OneNews() {
 
     useEffect(() => {
         newsService.GetOneNewsItem(id)
-        .then(data => {
-            setNewsItem(data);
-            return data;
-        })
-        .catch(err => {
-            console.log('OneNews err: ', err);
-        })
+            .then(data => {
+                setNewsItem(data);
+                return data;
+            })
+            .catch(err => {
+                console.log('OneNews err: ', err);
+            })
     },[id])
 
     if (newsItem !== undefined) {
         const timestamp = new Date(newsItem.date);
         const date = timestamp.toLocaleDateString();
         return (
-            <div className="news-item" key={newsItem.id}>
-                <p className="date">{date}</p> <h3>{newsItem.title}</h3>
-                <div>{newsItem.content}</div>
+            <div id="content">
+                <div className="news-item" key={newsItem.id}>
+                    <p className="date">{date}</p> <h3>{newsItem.title}</h3>
+                    <div>{newsItem.content}</div>
+                </div>
             </div>
         );
     } else {
         return (
-            <div className="news-item">
-                Asi vítr Máchale... :-)
+            <div id="content">
+                <div className="news-item">
+                    Asi vítr Máchale... :-)
+                </div>
             </div>
         );
     }

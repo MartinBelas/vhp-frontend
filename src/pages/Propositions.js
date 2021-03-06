@@ -9,7 +9,6 @@ export default function Propositions() {
         <div id="content">
             <h2>PROPOZICE</h2> 
 
-            <p>
                 <ul>  
                     <li><b>Datum konání:</b> {nextYearReady ? startDate : "pro příští ročník zatím není"}</li>
                     <li><b>Místo závodu:</b> Jistebník, Polanka nad Odrou, CHKO Poodří</li>
@@ -38,7 +37,6 @@ export default function Propositions() {
                         Závodníci se účastní závodů na vlastní nebezpečí.</li>
                     <li><b>Zdravotní služba:</b> <a href="http://www.zachranny-tym.cz" target="_blank" rel="noopener noreferrer">Záchranný tým červeného kříže</a></li>
                 </ul>
-            </p>
         </div>
     );
 }
