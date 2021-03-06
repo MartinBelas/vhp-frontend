@@ -14,7 +14,7 @@ function LatestNews() {
     const PREVIEW_LENGHT = 200;
     const LATEST_NEWS_COUNT = 10;
     
-    const { startDate, nextYearReady } = useAppContext();
+    const { startDate, nextDate, nextYearReady } = useAppContext();
     
     const [newsItems, setNewsItems] = useState();
     const [message, setMessage] = useState();
@@ -42,7 +42,7 @@ function LatestNews() {
         {nextYearReady ? <div className="news-item">
                             Do startu VH půlmaratonu zbývá
                             <Countdown
-                                date={startDate}
+                                date={nextDate}
                                 renderer={({ days }) => <span> {days}</span>}
                             /> dnů.
                         </div> 

@@ -19,6 +19,7 @@ export default function App() {
 
     const [isAuthenticated, userHasAuthenticated] = useState(false);
     const [startDate, setStartDate] = useState(0);
+    const [nextDate, setNextDate] = useState(0);
     const [eventCounter, setEventCounter] = useState(0);
     const [nextYearReady, setNextYearReady] = useState(false);
     const [latestNewsItems, setLatestNewsItems] = useState([]);
@@ -27,8 +28,9 @@ export default function App() {
         axios.get(REST_API + '/years/next', options)
             .then(response => {
                 if (response.data.isOk) {
-                    const nextDate = new Date(response.data.data.date).toLocaleDateString();
-                    setStartDate(nextDate);
+                    const nextDate = new Date(response.data.data.date);
+                    setNextDate(nextDate.toString());
+                    setStartDate(nextDate.toLocaleDateString());
                     setEventCounter(response.data.data.counter);
                     if (new Date(response.data.data.date) > new Date()) {
                         setNextYearReady(true);
@@ -50,6 +52,7 @@ export default function App() {
                             startDate, 
                             latestNewsItems, 
                             setLatestNewsItems, 
+                            nextDate,
                             nextYearReady }}>
                 <Router history={history}>
                     <HeaderComponent />
