@@ -4,7 +4,6 @@ import { TextField, Button, MenuItem } from '@material-ui/core';
 import ReCAPTCHA from "react-google-recaptcha";
 import { registrationsService } from '../services/registrationsService';
 import validate from '../services/validator.js'
-import { useAppContext } from '../libs/contextLib';
 import { AppContext } from "../libs/contextLib";
 
 function ApplicationForm() {

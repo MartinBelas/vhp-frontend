@@ -14,7 +14,7 @@ function LatestNews() {
     const PREVIEW_LENGHT = 200;
     const LATEST_NEWS_COUNT = 10;
     
-    const { startDate, nextDate, nextYearReady } = useAppContext();
+    const { nextDate, nextYearReady } = useAppContext();
     
     const [newsItems, setNewsItems] = useState();
     const [message, setMessage] = useState();

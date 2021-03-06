@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { useAppContext } from "../libs/contextLib";
 import { userService } from '../services/userService';
 
@@ -31,7 +31,7 @@ export default function HeaderComponent() {
             {isAuthenticated
                 ?   <nav className="adm"><span>
                         Jsi přihlášen jako administrátor &nbsp;
-                        <a href="#" onClick={handleLogout}><b>/&nbsp;Odhlásit&nbsp;/</b></a>&nbsp;
+                        <Link to="#" onClick={handleLogout}><b>/&nbsp;Odhlásit&nbsp;/</b></Link>
                     </span ></nav>
                 : ""
             }

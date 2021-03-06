@@ -32,7 +32,7 @@ export default function Registration() {
                     }
                 })
         }
-    },[])
+    },[nextYearReady])
 
     return (
         <div id="content">
