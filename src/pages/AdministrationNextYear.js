@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { CircularProgress } from '@material-ui/core';
 import axios from 'axios';
 import Calendar from 'react-calendar';
 import { useAppContext } from '../libs/contextLib';
@@ -17,6 +18,7 @@ export default function AdministrationNextYear() {
     const [newCategoryId, setNewCategoryId] = useState('');
     const [newCategoryDescription, setNewCategoryDescription] = useState('');
     const [message, setMessage] = useState('');
+    const [buttonState, setButtonState] = useState('');
     
     useEffect(() => {
         axios.get(REST_API + '/years/last', options)
@@ -161,9 +163,19 @@ export default function AdministrationNextYear() {
                             </button>
                         </div>
                         <hr />
-                        <button type="button" onClick={handleStartRegistrations}>
-                            SPUSTIT REGISTRACE
-                        </button>
+                        <br /><br />
+                        <div style={{ textAlign:'center'}}>
+							{buttonState.length > 1 ?
+								<CircularProgress />
+								:
+                                <button type="button" onClick={ () => {
+                                                setButtonState('Odesílám');
+                                                handleStartRegistrations()}
+                                }>
+                                    SPUSTIT REGISTRACE
+                                </button>
+							}
+						</div>
                     </div>
                     }
                 </div>

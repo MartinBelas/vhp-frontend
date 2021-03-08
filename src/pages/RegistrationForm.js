@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
 import { TextField, Button, MenuItem } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import ReCAPTCHA from "react-google-recaptcha";
 import { registrationsService } from '../services/registrationsService';
 import validate from '../services/validator.js'
@@ -12,7 +13,8 @@ function ApplicationForm() {
 	const [formIsValid, setFormIsValid] = useState(false);
 	const [races, setRaces] = useState([]);
 	const [message, setMessage] = useState();
-	
+	const [buttonState, setButtonState] = useState('');
+		
 	useEffect(() => {
 		registrationsService.GetRaces()
 			.then(response => {
@@ -158,22 +160,29 @@ function ApplicationForm() {
 				resp => {
 					if (resp.isOk) {
 						setMessage('Registrace proběhla v pořádku. Detaily byly poslány emailem.');
+						setButtonState('success');
 					} else {
 						setMessage("Registrace se nepovedla. " + resp.errMessage);
+						setButtonState('error');
 					}
 				},
 				err => {
 					if (err.status === 409) {
 						setMessage('Tato registrace se nepovedla. Email už v registracích existuje.');
+						setButtonState('error');
 					} else {
 						setMessage('Registrace se nepovedla.');
+						setButtonState('error');
 					}
 				}
 			);
 	}
 
 	return (
-		<form onSubmit={e => {handleSubmit(e)}}>
+		<form onSubmit={e => {
+			setButtonState('Odesílám');
+			handleSubmit(e);
+		}}>
             <div>
 				{message ? 
 					<div className="err">{message}</div> 
@@ -275,11 +284,21 @@ function ApplicationForm() {
 							onChange={recaptchaOnChange} />
 
 						<br />
-
+						
 						<div style={{ textAlign:'center'}}>
-							<Button variant="contained" color="primary" type="submit" disabled={!formIsValid || !recaptchaIsOk}>
-								Odeslat
-							</Button>
+							<br />
+							{buttonState.length > 1 ? 
+								<CircularProgress /> 
+							: 	<Button 
+										variant="contained" 
+										color="primary" 
+										type="submit" 
+										onClick={() => {}}
+										disabled={!formIsValid || !recaptchaIsOk}>
+									Odeslat
+								</Button>
+							}
+							
 						</div>
 						<br />
 					</div>
