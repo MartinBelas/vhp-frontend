@@ -19,25 +19,17 @@ export default function Program() {
 
             <ul>  
 
-                <li>10.00 zahájení dětské olympiády</li>
+                <li><b>Dopoledne:</b></li>
 
-                <li>11.00 start maratonu a štafet</li>
+                <li>8:00 prezence k závodům</li>
 
-                <li>12.45 ukončení soutěží dětské olympiády</li>
+                <li>Přesný čas startů budeme aktualizovat v průběhu května 2021</li>
 
-                <li>13.00 start půlmaratonu</li>
+                <li><b>Odpoledne:</b></li>
 
-                <li>13.15 start 3,6 km (doběh 13.30)</li>
+                <li>Dětská olympiáda</li>
 
-                <li>13.30 start čtvrtmaratonu</li>
-                
-                <li>14.10 vyhlášení výsledků dětské olympiády a běhu na 3,6 km</li>
-                
-                <li>vyhlášení výsledků čtvrtmaratonu, půlmaratonu a maratonu bude probíhat průběžně po doběhu a zpracování výsledků dle jednotlivých závodů</li>
-                
-                <li>14.30 zahájení doprovodného programu pro děti (některé atrakce, např. mobilní lezecká stěna, budou celodenní)</li>
-
-                <li>17.00 večerní afterpárty, DJ Ivo Bernatík</li>
+                <li>Přesný čas zahájení prezence a začátku soutěží dětské olympiády  budeme aktualizovat v průběhu května 2021</li>
 
             </ul>
         </div>
