@@ -52,7 +52,7 @@ export default function Registration() {
                 <div>
                     <h3>Registrováni:</h3>
                     {registeredRunners !== undefined && registeredRunners.map(user =>
-                        <div key={user.id}>{user.firstName} {user.lastName}, {user.birth}, {user.address}, {user.club}, {user.race} <hr /></div>
+                        <div key={user.id}>{user.firstName} {user.lastName}, {user.address}, {user.club}, {user.race} <hr /></div>
                     )}
                 </div>
             </div>
