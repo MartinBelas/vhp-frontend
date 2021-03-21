@@ -6,7 +6,7 @@ import { AppContext } from "../libs/contextLib";
 export default function Registration() {
 
     const nextYearReady = useContext(AppContext).nextYearReady;
-    
+
     let err = false;
     // if (window.location.pathname === "/registrace/err") {
     //     err = true;
@@ -14,6 +14,8 @@ export default function Registration() {
 
     const [registeredRunners, setRegisteredRunners] = useState([]);
     const [message, setMessage] = useState();
+    const [races, setRaces] = useState([]);
+    const [runnersInRaces, setRunnersInRaces] = useState([]);
 
     useEffect(() => {
         if (nextYearReady) {
@@ -30,32 +32,63 @@ export default function Registration() {
                         setMessage('Registrace se nepovedla, došlo k nějaké chybe');
                     }
                 })
+            registrationsService.GetRaces()
+                .then(response => {
+
+                    let racesOptions = [];
+                    response.forEach(r => {
+                        racesOptions.push(r);
+                    });
+
+                    setRaces(racesOptions);
+                })
+                .catch(err => {
+                    console.log('GetRaces err: No races provided.', err);
+                })
+            if (registeredRunners.length > 0 && races.length > 0) {
+                let counts = [];
+                races.forEach(r => {
+                    const count = registeredRunners.filter(registered => registered.race === r.description).length;
+                    counts.push([r.description + ": " + count]);
+                });
+                setRunnersInRaces(counts);
+            }
         }
-    },[nextYearReady])
+    }, [nextYearReady, races, registeredRunners])
 
     return (
         <div id="content">
             <h2>REGISTRACE</h2>
 
-            {!nextYearReady ? <div>Registrace není aktivní.</div> 
-            : 
-            <div>
-                
-                {err ? <div className='err'>{message}<br/></div> : <br/>}
-                        
+            {!nextYearReady ? <div>Registrace není aktivní.</div>
+                :
                 <div>
-                    <b><Link to={'/registracni-formular'} className="nav-link">Chcete se přihlásit? Přihlášku najdete zde.</Link></b>
+
+                    {err ? <div className='err'>{message}<br /></div> : <br />}
+
+                    <div>
+                        <b><Link to={'/registracni-formular'} className="nav-link">Chcete se přihlásit? Přihlášku najdete zde.</Link></b>
+                    </div>
+
+                    <br />
+                    <hr />
+                    <div>
+                        <h3>Registrováni:</h3>
+
+                        <h4>Počty běžců v závodě:</h4>
+                        {runnersInRaces !== undefined && runnersInRaces.map(r =>
+                            <p>{r}</p>
+                        )}
+
+                        <p>CELKEM běžců:{registeredRunners.length}</p>
+
+                        <hr />
+
+                        {registeredRunners !== undefined && registeredRunners.map(user =>
+                            <div key={user.id}>{user.firstName} {user.lastName}, {user.address}, {user.club}, {user.race} <hr /></div>
+                        )}
+                    </div>
                 </div>
-                
-                <br />
-                <hr />
-                <div>
-                    <h3>Registrováni:</h3>
-                    {registeredRunners !== undefined && registeredRunners.map(user =>
-                        <div key={user.id}>{user.firstName} {user.lastName}, {user.address}, {user.club}, {user.race} <hr /></div>
-                    )}
-                </div>
-            </div>
             }
         </div>
     );
