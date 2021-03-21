@@ -80,7 +80,7 @@ export default function Registration() {
                             <p>{r}</p>
                         )}
 
-                        <p>CELKEM běžců:{registeredRunners.length}</p>
+                        <p>CELKEM běžců: {registeredRunners.length}</p>
 
                         <hr />
 
