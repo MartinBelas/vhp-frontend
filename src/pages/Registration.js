@@ -45,16 +45,8 @@ export default function Registration() {
                 .catch(err => {
                     console.log('GetRaces err: No races provided.', err);
                 })
-            if (registeredRunners.length > 0 && races.length > 0) {
-                let counts = [];
-                races.forEach(r => {
-                    const count = registeredRunners.filter(registered => registered.race === r.description).length;
-                    counts.push([r.description + ": " + count]);
-                });
-                setRunnersInRaces(counts);
-            }
         }
-    }, [nextYearReady, races, registeredRunners])
+    }, [nextYearReady])
 
     return (
         <div id="content">
@@ -75,9 +67,20 @@ export default function Registration() {
                     <div>
                         <h3>Registrováni:</h3>
 
+                        {
+                            races.forEach(r => {
+                                const count = registeredRunners.filter(registered => registered.race === r.description).length;
+                                runnersInRaces.push({
+                                                        "id":r.id,
+                                                        "description":r.description,
+                                                        "count":count
+                                                    });
+                                })
+                        }
+
                         <h4>Počty běžců v závodě:</h4>
                         {runnersInRaces !== undefined && runnersInRaces.map(r =>
-                            <p>{r}</p>
+                            <p key={r.id}>{r.description}: {r.count}</p>
                         )}
 
                         <p>CELKEM běžců: {registeredRunners.length}</p>
