@@ -14,7 +14,7 @@ export default function Propositions() {
                     <li><b>Místo závodu:</b> Jistebník, Polanka nad Odrou, CHKO Poodří</li>
                     <li><b>Start a trasa závodu:</b> start PŮLMARATONU, MARATONU, GALERIJNÍHO BĚHU A ŠTAFET  bude ve sportovním areálu TJ Jistebník a dále po značené trase, START ZÁVODU NA 10 km U ZÁVOR</li>
                     <li><b>Cíl závodu:</b> SPORTOVNÍ AREÁL TJ JISTEBNÍK</li>
-                    <li><b>Prezentace:</b> od 8:00 hod. - sportovní areál TJ Jistebník</li>
+                    <li><b>Prezentace:</b> od 7:00 hod. - sportovní areál TJ Jistebník</li>
                     <li><b>Účast:</b> otevřený závod</li>
                     
                     <li><b>Přihlášky:</b>  <a href="./registrace">on-line formulář zde</a></li>

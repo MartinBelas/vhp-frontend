@@ -21,15 +21,13 @@ export default function Program() {
 
                 <li><b>Dopoledne:</b></li>
 
-                <li>8:00 prezence k závodům</li>
+                <li>7:00 prezence k závodům</li>
 
-                <li>Přesný čas startů budeme aktualizovat v průběhu května 2021</li>
+                <li>od 9:00 start závodů</li>
 
                 <li><b>Odpoledne:</b></li>
 
-                <li>Dětská olympiáda</li>
-
-                <li>Přesný čas zahájení prezence a začátku soutěží dětské olympiády  budeme aktualizovat v průběhu května 2021</li>
+                <li>od 13:30 dětská olympiáda</li>
 
             </ul>
         </div>
