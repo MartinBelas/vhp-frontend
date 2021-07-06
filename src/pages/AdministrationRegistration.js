@@ -95,7 +95,7 @@ export default function AdministrationRegistration() {
                 <br />
                 {registrations ? registrations.map((item) => {
                     return <div className="news-item" key={item.id}>
-                        <p>{item.id} - {item.firstName} {item.lastName}, {item.year}, {item.email}, {item.phone} - zaplaceno: {item.paid+""} -</p>
+                        <p>{item.firstName} {item.lastName}, {item.year}, {item.email}, {item.phone}</p>
 
                         <FormGroup>
                             <FormControlLabel
