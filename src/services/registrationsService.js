@@ -1,18 +1,33 @@
 import config from '../config';
+import { useAppContext } from "../libs/contextLib";
+import { userService } from '../services/userService';
 const REST_API = config.restApi;
 
 export const registrationsService = {
     GetAllRegistrations,
     CreateRegistration,
-    GetRaces
-};
-
-const requestOptions = {
-    method: 'GET',
-    headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' }
+    GetRaces,
+    UpdateOneRegistration
 };
 
 async function GetAllRegistrations() {
+
+    //const { isAuthenticated } = useAppContext();
+
+    let user = userService.getCurrentUser();
+
+    let requestOptions;
+    // if (isAuthenticated) {
+    //     requestOptions = {
+    //         method: 'GET',
+    //         headers: { 'api-key': process.env.REACT_APP_API_KEY, 'authorization': user.accessToken, 'Content-Type': 'application/json' },
+    //     };
+    // } else {
+    requestOptions = {
+        method: 'GET',
+        headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' }
+        // };
+    }
 
     try {
         const response = await fetch(REST_API + '/registrations', requestOptions);
@@ -59,13 +74,18 @@ function CreateRegistration(data) {
 
             return response.json();
         })
-        .catch( err => {
+        .catch(err => {
             console.log('ERR Registration service, create new: ', err);
             return Promise.reject(err);
         });
 }
 
 function GetRaces() {
+
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' }
+    };
 
     return fetch(REST_API + '/years/next/races', requestOptions)
         .then(response => {
@@ -91,41 +111,40 @@ function GetRaces() {
 //             });
 // }
 
-// function updateOneRegistration(id, title, content) {
-    
-//     let user = userService.getCurrentUser();
+async function UpdateOneRegistration(data) {
 
-//     const payload = {
-//         "news":
-//         {
-//             "id": id,
-//             "title": title,
-//             "content": content
-//         }
-//     }
+    let payload = {
+        "registration": {}
+    }
 
-//     const requestOptions = {
-//         method: 'PUT',
-//         headers: { 'api-key': process.env.REACT_APP_API_KEY, 'authorization': user.accessToken, 'Content-Type': 'application/json' },
-//         body: JSON.stringify(payload),
-//     };
+    if (data.paid !== undefined) {
+        payload.registration.paid = data.paid;
+    }
 
-//     return fetch(REST_API + '/news/' + id, requestOptions)
-//         .then(response => {
-//             if (!response.ok) {
-//                 return Promise.reject(response.statusText);
-//             }
-//             return response.json();
-//         })
-//         .then(responseData => {
-//             localStorage.setItem('news', JSON.stringify(responseData));
-//             return responseData;
-//         })
-//         .catch(err => {
-//             console.log('err: ', err);
-//             return err;
-//         });
-// } 
+    let user = userService.getCurrentUser();
+
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 'api-key': process.env.REACT_APP_API_KEY, 'authorization': user.accessToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    };
+
+    return fetch(REST_API + '/registrations/' + data.id, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return Promise.reject(response.statusText);
+            }
+            return response.json();
+        })
+        .then(responseData => {
+            localStorage.setItem('news', JSON.stringify(responseData));
+            return responseData;
+        })
+        .catch(err => {
+            console.log('err: ', err);
+            return err;
+        });
+}
 
 // function deleteOneRegistration(id) {
 
