@@ -87,10 +87,6 @@ export default function AdministrationRegistration() {
         return (
             <div>
 
-                <label>
-                    <span>Switch with default style</span>
-                    {/* <Switch onChange={handleChange(false)} checked={true} /> */}
-                </label>
                 Registrováni:
                 <br />
                 {registrations ? registrations.map((item) => {
