@@ -21,7 +21,6 @@ export default function AdministrationRegistration() {
         registrationsService.GetAllRegistrations()
             .then(data => {
                 setRegistrations(data);
-
             })
             .catch(err => {
                 console.log('err: ', err.message);
@@ -91,7 +90,7 @@ export default function AdministrationRegistration() {
                 <br />
                 {registrations ? registrations.map((item) => {
                     return <div className="news-item" key={item.id}>
-                        <p>{item.firstName} {item.lastName}, {item.year}, {item.email}, {item.phone}</p>
+                        <p>{item.firstName} {item.lastName}, {item.birth}, {item.email}, {item.phone}, {item.address}, {item.club}, {item.race}</p>
 
                         <FormGroup>
                             <FormControlLabel

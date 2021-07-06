@@ -17,16 +17,16 @@ async function GetAllRegistrations() {
     let user = userService.getCurrentUser();
 
     let requestOptions;
-    // if (isAuthenticated) {
-    //     requestOptions = {
-    //         method: 'GET',
-    //         headers: { 'api-key': process.env.REACT_APP_API_KEY, 'authorization': user.accessToken, 'Content-Type': 'application/json' },
-    //     };
-    // } else {
-    requestOptions = {
-        method: 'GET',
-        headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' }
-        // };
+    if (user !== undefined && user !== null && user.accessToken !== undefined && user.accessToken !== null && user.accessToken !== "") {
+        requestOptions = {
+            method: 'GET',
+            headers: { 'api-key': process.env.REACT_APP_API_KEY, 'authorization': user.accessToken, 'Content-Type': 'application/json' },
+        };
+    } else {
+        requestOptions = {
+            method: 'GET',
+            headers: { 'api-key': process.env.REACT_APP_API_KEY, 'Content-Type': 'application/json' }
+        };
     }
 
     try {
