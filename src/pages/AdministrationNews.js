@@ -5,7 +5,7 @@ import {
     BrowserRouter as Router,
     Route,
     Switch } from 'react-router-dom';
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { newsService } from '../services/newsService';
 import { useAppContext } from '../libs/contextLib';
 
@@ -31,21 +31,23 @@ export default function AdministrationNews() {
     function NewsList() {
         return (
             <div>
-    
                 {isAuthenticated ? 
-                    <p><Link to="/adm/novinky/nova"><b>Přidat novou novinku</b></Link></p>
-                    : ""
+                    <div>
+                        <p><Link to="/adm/novinky/nova"><b>Přidat novou novinku</b></Link></p>
+                        {newsItems ? newsItems.map((item) => {
+                            const timestamp = new Date(item.date);
+                            const date = timestamp.toLocaleDateString();
+                            return <div className="news-item" key={item.id}>
+                                    <p className="date">{date} <Link to={"/adm/novinky/"+item.id}><b>{item.title}</b></Link></p>
+                                    <div>{item.content}</div>
+                                </div>
+                
+                        }) 
+                        : ""}
+                    </div>
+                    : <Redirect to="/" />
                 }
         
-                {newsItems ? newsItems.map((item) => {
-                    const timestamp = new Date(item.date);
-                    const date = timestamp.toLocaleDateString();
-                    return <div className="news-item" key={item.id}>
-                            <p className="date">{date} <Link to={"/adm/novinky/"+item.id}><b>{item.title}</b></Link></p>
-                            <div>{item.content}</div>
-                        </div>
-        
-                }) : ""}
             </div>
         );
     }
@@ -76,7 +78,7 @@ export default function AdministrationNews() {
                     <div>{newsItem.content}</div>
                     {isAuthenticated ? 
                         <p><Link to={"/adm/novinky/edit/"+newsItem.id}>UPRAVIT</Link> ~ <Link to={"/adm/novinky/delete/"+newsItem.id}>ODSTRANIT</Link></p>
-                        : ""
+                        : <Redirect to="/" />
                     }
                 </div>
             );
@@ -124,8 +126,6 @@ export default function AdministrationNews() {
                             refresh();
                         },
                         error => {
-                            //TODO
-                            //console.log('err: ', error);
                             console.log('CreateNewNews - err: ', error)
                         }
                     );
@@ -136,8 +136,6 @@ export default function AdministrationNews() {
                             refresh();
                         },
                         error => {
-                            //TODO
-                            //console.log('err: ', error);
                             console.log('UpdateNewNews - err: ', error)
                         }
                     );
@@ -211,18 +209,22 @@ export default function AdministrationNews() {
     }
 
     return (
-        <Router>
-            <div id="adm-content">
-                <h2>Novinky</h2>
-                
-                <Switch>
-                    <Route path="/adm/novinky/nova" children={<CreateOrUpdateNews operation="create" />} />
-                    <Route path="/adm/novinky/edit/:id" children={<CreateOrUpdateNews operation="edit" />} />
-                    <Route path="/adm/novinky/delete/:id" children={<DeleteOneNews />} />
-                    <Route path="/adm/novinky/:id" children={<OneNews />} />
-                    <Route path="/adm/novinky" children={<NewsList />} />
-                </Switch>
-            </div>
-        </Router>
+        <div id="adm-content">
+            {isAuthenticated ?
+                <div>
+                    <Router>
+                            <h2>Novinky</h2>
+                            
+                            <Switch>
+                                <Route path="/adm/novinky/nova" children={<CreateOrUpdateNews operation="create" />} />
+                                <Route path="/adm/novinky/edit/:id" children={<CreateOrUpdateNews operation="edit" />} />
+                                <Route path="/adm/novinky/delete/:id" children={<DeleteOneNews />} />
+                                <Route path="/adm/novinky/:id" children={<OneNews />} />
+                                <Route path="/adm/novinky" children={<NewsList />} />
+                            </Switch>
+                    </Router>
+                </div> : <Redirect to="/" />
+            }
+        </div>
     );
 }

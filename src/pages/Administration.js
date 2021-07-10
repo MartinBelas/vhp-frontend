@@ -18,8 +18,6 @@ export default function Administration() {
                     <li><NavLink to='/adm/novinky' className="nav-link">Novinky</NavLink></li>
                     <br/>
                     <li><NavLink to='/adm/registrace' className="nav-link">Registrace</NavLink></li>
-                    <br/>
-                    <li><NavLink to='/adm/export' className="nav-link">Export registrací</NavLink></li>
                 </ul>
             </div>
             : <Redirect to="/" />

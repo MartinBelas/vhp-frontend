@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from "react-router-dom";
 import { CircularProgress } from '@material-ui/core';
 import axios from 'axios';
 import Calendar from 'react-calendar';
@@ -179,7 +180,7 @@ export default function AdministrationNextYear() {
                     </div>
                     }
                 </div>
-                : ""
+                : <Redirect to="/" />
             }
         </div>
     );

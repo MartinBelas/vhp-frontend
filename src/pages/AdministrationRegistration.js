@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import ReactExport from "react-export-excel";
 import {
-    Link,
-    useParams,
     BrowserRouter as Router,
-    Route
+    Route,
+    Redirect
 } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import { registrationsService } from '../services/registrationsService';
@@ -16,6 +16,11 @@ export default function AdministrationRegistration() {
     const { isAuthenticated } = useAppContext();
     const [registrations, setRegistrations] = useState([]);
     const [paidmap, setPaidmap] = useState(new Map());
+    const [excelData, setExcelData] = useState([]);
+    
+    const ExcelFile = ReactExport.ExcelFile;
+    const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+    const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
     useEffect(() => {
         registrationsService.GetAllRegistrations()
@@ -23,48 +28,69 @@ export default function AdministrationRegistration() {
                 setRegistrations(data);
             })
             .catch(err => {
-                console.log('err: ', err.message);
+                console.log('GetAllRegistrations err: ', err.message);
             })
     }, [])
 
     useEffect(() => {
+        const tempExcelData = [];
         registrations.forEach(r => {
             setPaidmap(paidmap.set(r.id, r.paid));
-        })
+            tempExcelData.push({
+                firstName: r.firstName,
+                lastName: r.lastName,
+                birth: r.birth,
+                phone: r.phone,
+                address: r.address,
+                club: r.club,
+                race: r.race,
+                sex: r.sex.code,
+                paid: r.paid
+            });
+        });
+        if (isAuthenticated) {
+            setExcelData(tempExcelData);
+        }
     }, [registrations, paidmap])
+
 
     // let history = useHistory();
 
     const getPaidValue = (id) => {
-        const registration = registrations.filter((r) => r.id === id)[0];
-        return registration.paid;
+        if (isAuthenticated) {
+            const registration = registrations.filter((r) => r.id === id)[0];
+            return registration.paid;
+        }
     };
 
     const paidChanged = (e, id) => {
+        
+        if (isAuthenticated) {
 
-        setPaidmap(paidmap.set(id, e.target.checked));
-
-        const newRegistrations = [...registrations];
-        newRegistrations.forEach( (r) => {
-            if (r.id === id) {
-                r.paid = e.target.checked;
+            setPaidmap(paidmap.set(id, e.target.checked));
+    
+            const newRegistrations = [...registrations];
+            newRegistrations.forEach((r) => {
+                if (r.id === id) {
+                    r.paid = e.target.checked;
+                }
+            });
+    
+            setRegistrations(newRegistrations);
+    
+            const data = {
+                "id": id,
+                "paid": e.target.checked
             }
-        });
-
-        setRegistrations(newRegistrations);
-
-        const data = {
-            "id": id,
-            "paid": e.target.checked
+    
+            registrationsService.UpdateOneRegistration(data)
+                .then(data => {
+    
+                })
+                .catch(err => {
+                    console.log('UpdateOneRegistration err: ', err.message);
+                })
         }
-
-        registrationsService.UpdateOneRegistration(data)
-            .then(data => {
-
-            })
-            .catch(err => {
-                console.log('err: ', err.message);
-            })
     };
 
     function RegistrationsList() {
@@ -85,23 +111,50 @@ export default function AdministrationRegistration() {
 
         return (
             <div>
+                {isAuthenticated ?
+                    <div>
 
-                Registrováni:
-                <br />
-                {registrations ? registrations.map((item) => {
-                    return <div className="news-item" key={item.id}>
-                        <p>{item.firstName} {item.lastName}, {item.birth}, {item.email}, {item.phone}, {item.address}, {item.club}, {item.race}</p>
+                        <div className="news-item">
+                            Export registrovaných do excelu: &nbsp;
 
-                        <FormGroup>
-                            <FormControlLabel
-                                control={<Switch checked={getPaidValue(item.id)} onChange={(e) => paidChanged(e, item.id)} />}
-                                label="zaplaceno"
-                            />
-                        </FormGroup>
+                            <ExcelFile element={<button>Download</button>}>
+                                <ExcelSheet data={excelData} name="VHP-Registrace">
+                                    <ExcelColumn label="Jméno" value="firstName" />
+                                    <ExcelColumn label="Příjmení" value="lastName" />
+                                    <ExcelColumn label="Ročník" value="birth" />
+                                    <ExcelColumn label="Tel." value="phone" />
+                                    <ExcelColumn label="Bydliště" value="address" />
+                                    <ExcelColumn label="Klub" value="club" />
+                                    <ExcelColumn label="Závod" value="race" />
+                                    <ExcelColumn label="Pohlaví" value="sex" />
+                                    <ExcelColumn label="Zaplaceno"
+                                        value={(r) => r.paid ? "Ano" : "Ne"} />
+                                </ExcelSheet>
+                            </ExcelFile>
+                        </div>
 
+
+                        <p>Registrováni:</p>
+                        <br />
+                        {registrations ? registrations.map((item) => {
+                            return <div className="news-item" key={item.id}>
+                                <p>{item.firstName} {item.lastName}, {item.birth}, {item.email}, {item.phone}, {item.address}, {item.club}, {item.race}</p>
+
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={<Switch checked={getPaidValue(item.id)} onChange={(e) => paidChanged(e, item.id)} />}
+                                        label="zaplaceno"
+                                    />
+                                </FormGroup>
+
+                            </div>
+
+                        }) : ""}
                     </div>
+                    : <Redirect to="/" />
+                }
 
-                }) : ""}
+                
             </div>
         )
     }
@@ -267,15 +320,20 @@ export default function AdministrationRegistration() {
     // }
 
     return (
-        <Router>
-            <div id="adm-content">
-                <h2>Registrace</h2>
+        <div id="adm-content">
+            {isAuthenticated ?
+                <div>
+                    <Router>
+                        <h2>Registrace</h2>
 
-                {/* <Route path="/adm/registrace/edit/:id" children={<UpdateRegistration operation="edit" />} />
-                    <Route path="/adm/registrace/delete/:id" children={<DeleteRegistration />} />
-                    <Route path="/adm/registrace/:id" children={<OneRegistration />} /> */}
-                <Route path="/adm/registrace" children={<RegistrationsList />} />
-            </div>
-        </Router>
+                        {/* <Route path="/adm/registrace/edit/:id" children={<UpdateRegistration operation="edit" />} />
+                        <Route path="/adm/registrace/delete/:id" children={<DeleteRegistration />} />
+                        <Route path="/adm/registrace/:id" children={<OneRegistration />} /> */}
+                        <Route path="/adm/registrace" children={<RegistrationsList />} />
+
+                    </Router>
+                </div> : <Redirect to="/" />
+            }
+        </div>
     );
 }
