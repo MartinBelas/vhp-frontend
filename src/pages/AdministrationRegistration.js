@@ -41,6 +41,7 @@ export default function AdministrationRegistration() {
                 lastName: r.lastName,
                 birth: r.birth,
                 phone: r.phone,
+                email: r.email,
                 address: r.address,
                 club: r.club,
                 race: r.race,
@@ -123,6 +124,7 @@ export default function AdministrationRegistration() {
                                     <ExcelColumn label="Příjmení" value="lastName" />
                                     <ExcelColumn label="Ročník" value="birth" />
                                     <ExcelColumn label="Tel." value="phone" />
+                                    <ExcelColumn label="E-mail" value="email" />
                                     <ExcelColumn label="Bydliště" value="address" />
                                     <ExcelColumn label="Klub" value="club" />
                                     <ExcelColumn label="Závod" value="race" />
