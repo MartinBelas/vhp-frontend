@@ -20,10 +20,10 @@ export default function Propositions() {
                     <li><b>Přihlášky:</b>  <a href="./registrace">on-line formulář zde</a></li>
                     <li><b>Kontaktní osoby:</b> viz <a href="./kontakty">kontakty</a></li>
                     <li><b>Web:</b>	<a href="http://www.vh-pulmaraton.cz" target="_top">www.vh-pulmaraton.cz</a></li>
-                    <li><b>Startovné: 250,- kč</b> na závod na účet při odeslání přihlášky (č. účtu: 2200743991/2010 - transparentní účet u fiobanky, při bezhotovostní platbě uveďte do zprávy pro příjemce své jméno), <b>500 kč</b> v den závodu na místě. 
-                        <br/>Zahrnuje 2 x občerstvení na trati, polévka a nápoj po závodě, účastnický list, pronájmy, podíl na občerstvení pořadatelů během závodu, vstupné na večerní program. 
-                        <br/>Dětský program 50,- kč za účastnickou kartu.</li>
-                    <li><b>Startovné ŠTAFETY 4 x 10,5 km:  1000kč</b></li>
+                    <li><b>Startovné: 250,- Kč</b> na závod na účet při odeslání přihlášky (č. účtu: 2200743991/2010 - transparentní účet u fiobanky, při bezhotovostní platbě uveďte do zprávy pro příjemce své jméno), <b>500 kč</b> v den závodu na místě. 
+                        <br/>Zahrnuje 2 x občerstvení na trati, ORIGINÁLNÍ STARTOVNÍ ČÍSLO jako účastnický list, pronájmy, podíl na občerstvení pořadatelů během závodu, vstupné na večerní program. 
+                        <br/>Dětský program 100,- Kč / 1. dítě, každý další sourozenec za 50,- Kč.</li>
+                    <li><b>Startovné ŠTAFETY 4 x 10,5 km:  1000,- Kč</b></li>
                     <li><b>Ubytování:</b> vlastní stan v areálu TJ (vlastní stan 50,- kč/osoba/noc)</li>
                     <li><b>Stravování:</b> zajištěno v místě závodu</li>
                     <li><b>Pravidla závodů:</b> závodí se dle pravidel běžeckých závodů a těchto propozic, limit pro vběhnutí do druhého kola v rámci maratonu je 2:30 hod.</li>
