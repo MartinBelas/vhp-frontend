@@ -32,7 +32,7 @@ export default function App() {
                     setNextDate(nextDate.toString());
                     setStartDate(nextDate.toLocaleDateString());
                     setEventCounter(response.data.data.counter);
-                    if (new Date(response.data.data.date) > new Date()) {
+                    if (new Date(response.data.data.date) > (new Date() - (3600 * 1000 * 24))) {
                         setNextYearReady(true);
                     }
                 }
