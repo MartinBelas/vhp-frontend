@@ -10,7 +10,6 @@ class Contact extends Component {
                 <ul>
                     <li>Jistebník v pohybu z.s.</li> 
                     <li>Martin Otto - <a href="mailto:martin.otto@seznam.cz">martin.otto@seznam.cz</a> - tel. 731&nbsp;578&nbsp;936</li>
-                    <li>Martin Lepík - <a href="mailto:lepik@pod.cz">lepik@pod.cz</a> - tel. 732&nbsp;409&nbsp;867</li>
                     <li>web: <a href="http://www.vh-pulmaraton.cz">www.vh-pulmaraton.cz</a></li>
                 </ul>
                 
