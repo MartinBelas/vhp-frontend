@@ -52,47 +52,11 @@ export default function Registration() {
         <div id="content">
             <h2>REGISTRACE</h2>
 
-            {!nextYearReady ? <div>Registrace není aktivní.</div>
-                :
-                <div>
-
-                    {err ? <div className='err'>{message}<br /></div> : <br />}
 
                     <div>
-                        <b><Link to={'/registracni-formular'} className="nav-link">Chcete se přihlásit? Přihlášku najdete zde.</Link></b>
+                        <b><a href="https://www.nazavody.cz/zavod/307-jistebnicky-vh-pulmaraton-2022-12-rocnik/">Chcete se přihlásit? Přihlášku najdete zde.</a></b>
                     </div>
 
-                    <br />
-                    <hr />
-                    <div>
-                        <h3>Registrováni:</h3>
-
-                        {
-                            races.forEach(r => {
-                                const count = registeredRunners.filter(registered => registered.race === r.description).length;
-                                runnersInRaces.push({
-                                                        "id":r.id,
-                                                        "description":r.description,
-                                                        "count":count
-                                                    });
-                                })
-                        }
-
-                        <h4>Počty běžců v závodě:</h4>
-                        {runnersInRaces !== undefined && runnersInRaces.map(r =>
-                            <p key={r.id}>{r.description}: {r.count}</p>
-                        )}
-
-                        <p>CELKEM běžců: {registeredRunners.length}</p>
-
-                        <hr />
-
-                        {registeredRunners !== undefined && registeredRunners.map(user =>
-                            <div key={user.id}>{user.firstName} {user.lastName}, {user.address}, {user.club}, {user.race} <hr /></div>
-                        )}
-                    </div>
-                </div>
-            }
         </div>
     );
 }

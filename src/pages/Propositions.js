@@ -20,13 +20,14 @@ export default function Propositions() {
                     <li><b>Přihlášky:</b>  <a href="./registrace">on-line formulář zde</a></li>
                     <li><b>Kontaktní osoby:</b> viz <a href="./kontakty">kontakty</a></li>
                     <li><b>Web:</b>	<a href="http://www.vh-pulmaraton.cz" target="_top">www.vh-pulmaraton.cz</a></li>
+                    <p id="startovne"></p>
                     <li><b>Startovné:</b>
-                        <br/><b>- základní 400,- Kč</b> na účet při odeslání přihlášky (č. účtu: 2200743991/2010 - transparentní účet u fiobanky, při bezhotovostní platbě uveďte do zprávy pro příjemce své jméno), 500 kč v den závodu na místě.
+                        <br/><b>- základní 400,- Kč</b> na účet při odeslání přihlášky (č. účtu: 2200743991/2010 - transparentní účet u fiobanky, při bezhotovostní platbě uveďte do zprávy pro příjemce své jméno), 600 kč v den závodu na místě.
                         <br/>Zahrnuje 2 x občerstvení na trati, ORIGINÁLNÍ STARTOVNÍ ČÍSLO jako účastnický list, pronájmy, podíl na občerstvení pořadatelů během závodu, vstupné na večerní program.
-                        <br/><b>- premiérové 1000,- Kč</b> na účet při odeslání přihlášky (č. účtu: 2200743991/2010 - transparentní účet u fiobanky, při bezhotovostní platbě uveďte do zprávy pro příjemce své jméno), 500 kč v den závodu na místě.
-                        <br/>Zahrnuje základ + premiérové tričko závodu s logem 12. ročníku + příspěvek na rekonstrukci Sportovního centra volného času v Jistebníku.
+                        <br/>Startovné Běh Galerijní 150,- Kč na účet při odeslání přihlášky, 200 kč v den závodu na místě.
                         <br/>Dětský program 100,- Kč / 1. dítě, každý další sourozenec za 50,- Kč.</li>
                     <li><b>Startovné ŠTAFETY 4 x 10,5 km:  1500,- Kč</b></li>
+                    <li><b>Garantujeme vrácení zaplaceného startovného s odhlášením 7 dnů před závodem.</b></li>
                     <li><b>Ubytování:</b> vlastní stan v areálu TJ (vlastní stan 50,- kč/osoba/noc)</li>
                     <li><b>Stravování:</b> zajištěno v místě závodu</li>
                     <li><b>Pravidla závodů:</b> závodí se dle pravidel běžeckých závodů a těchto propozic, limit pro vběhnutí do druhého kola v rámci maratonu je 2:30 hod.</li>

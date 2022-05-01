@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import ReactExport from "react-export-excel";
 import {
     BrowserRouter as Router,
     Route,
     Redirect
 } from 'react-router-dom';
-import { useHistory } from "react-router-dom";
 import { registrationsService } from '../services/registrationsService';
 import { useAppContext } from '../libs/contextLib';
 
@@ -16,12 +14,7 @@ export default function AdministrationRegistration() {
     const { isAuthenticated } = useAppContext();
     const [registrations, setRegistrations] = useState([]);
     const [paidmap, setPaidmap] = useState(new Map());
-    const [excelData, setExcelData] = useState([]);
     
-    const ExcelFile = ReactExport.ExcelFile;
-    const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-    const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
-
     useEffect(() => {
         registrationsService.GetAllRegistrations()
             .then(data => {
@@ -31,31 +24,6 @@ export default function AdministrationRegistration() {
                 console.log('GetAllRegistrations err: ', err.message);
             })
     }, [])
-
-    useEffect(() => {
-        const tempExcelData = [];
-        registrations.forEach(r => {
-            setPaidmap(paidmap.set(r.id, r.paid));
-            tempExcelData.push({
-                firstName: r.firstName,
-                lastName: r.lastName,
-                birth: r.birth,
-                phone: r.phone,
-                email: r.email,
-                address: r.address,
-                club: r.club,
-                race: r.race,
-                sex: r.sex.code,
-                paid: r.paid
-            });
-        });
-        if (isAuthenticated) {
-            setExcelData(tempExcelData);
-        }
-    }, [registrations, paidmap])
-
-
-    // let history = useHistory();
 
     const getPaidValue = (id) => {
         if (isAuthenticated) {
@@ -118,21 +86,7 @@ export default function AdministrationRegistration() {
                         <div className="news-item">
                             Export registrovaných do excelu: &nbsp;
 
-                            <ExcelFile element={<button>Download</button>}>
-                                <ExcelSheet data={excelData} name="VHP-Registrace">
-                                    <ExcelColumn label="Jméno" value="firstName" />
-                                    <ExcelColumn label="Příjmení" value="lastName" />
-                                    <ExcelColumn label="Ročník" value="birth" />
-                                    <ExcelColumn label="Tel." value="phone" />
-                                    <ExcelColumn label="E-mail" value="email" />
-                                    <ExcelColumn label="Bydliště" value="address" />
-                                    <ExcelColumn label="Klub" value="club" />
-                                    <ExcelColumn label="Závod" value="race" />
-                                    <ExcelColumn label="Pohlaví" value="sex" />
-                                    <ExcelColumn label="Zaplaceno"
-                                        value={(r) => r.paid ? "Ano" : "Ne"} />
-                                </ExcelSheet>
-                            </ExcelFile>
+                            
                         </div>
 
 

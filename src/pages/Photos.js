@@ -6,6 +6,13 @@ class Photos extends Component {
         <div id="content">
             <h2>FOTOGALERIE</h2> 
 
+            <h3>2021</h3> 
+
+            <p>
+            <a href="https://otus2.rajce.idnes.cz/Jistebnicky_pulmaraton_21._8._2021_VERONIKA_HORVATH_detska_olympiada/" target="_blank" rel="noopener noreferrer">Dětská olympiáda 2021 - fotografie Veronika Horvath </a>
+            </p>
+
+
             <h3>2018</h3> 
 
             <p>
