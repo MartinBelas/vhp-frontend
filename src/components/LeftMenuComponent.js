@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppContext } from "../libs/contextLib";
-import radiocas from '../images/radio-cas.png';
 import ismm from '../images/ismm.png';
 import tenzona from '../images/tenzona.png';
 
@@ -27,9 +26,6 @@ export default function LeftMenuComponent() {
                     <li><NavLink to='/kontakty' className="nav-link">Kontakty</NavLink></li>
                 </ul>
             </nav>
-            <a href="https://www.casradio.cz/" target="_blank">
-                <img src={radiocas} width="140px" />
-            </a>
             <a href="https://www.ismm.cz/" target="_blank">
                 <img src={ismm} width="140px" />
             </a>
